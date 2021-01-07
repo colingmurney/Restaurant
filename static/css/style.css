@@ -1,0 +1,251 @@
+body {
+  background-image: url("../images/background2.jpg");
+}
+
+.itemButton {
+  width: 30px;
+  height: 30px;
+  float: right;
+  margin: 0 5px 0 5px;
+  text-align: center;
+  padding: 3px;
+  color: white;
+  background-color: lightblue;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.item h3,
+.item p {
+  margin-left: 5px;
+}
+.item {
+  float: left;
+  width: 20%;
+  margin: 5px;
+  background-color: #f2f2f2;
+  border-radius: 25px;
+}
+
+.grid-row {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  height: 100px;
+  width: 80%;
+}
+
+img {
+  width: 100%;
+  border-radius: 25px;
+}
+
+.page-content {
+  margin-top: 25px;
+  width: 100%;
+  height: 700px;
+  margin-bottom: 25px;
+}
+
+.about {
+  margin: auto;
+  width: 80%;
+  text-align: center;
+}
+
+.about-text {
+  background-color: #f2f2f2;
+  border-radius: 25px;
+  padding: 5px 10px 5px 10px;
+  margin-bottom: 10px;
+}
+
+.container {
+  background-color: #f2f2f2;
+  padding: 5px 10px 5px 10px;
+  border: 1px solid lightgrey;
+  border-radius: 25px;
+  width: 25%;
+  height: 75%;
+  float: right;
+  margin: 30px;
+  text-align: left;
+  position: relative;
+}
+
+table {
+  margin-left: 10 px;
+  width: 50%;
+}
+
+.row {
+  display: flex;
+}
+
+.col,
+.col-2 {
+  padding: 0 16px;
+}
+
+.container-payment {
+  margin: auto;
+  width: 50%;
+  background-color: #f2f2f2;
+  padding: 5px 20px 15px 20px;
+  border: 1px solid lightgrey;
+  border-radius: 3px;
+  border-radius: 20px;
+  margin-bottom: 50px;
+}
+
+/* .container-payment select {
+  background-color: lightblue;
+  padding: 9px;
+  width: 250px;
+  border-radius: 3px;
+  font-size: 12px;
+} */
+
+input[type="text"],
+#province {
+  width: 80%;
+  margin-bottom: 20px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+#province {
+  width: 100px;
+  margin-right: 0px;
+}
+
+#postal {
+  margin-left: 0px;
+}
+
+label {
+  margin-bottom: 10px;
+  display: block;
+}
+
+.btn {
+  background-color: blue;
+  color: white;
+  padding: 12px;
+  margin: 5px 35px 5px 35px;
+  border: none;
+  width: 90%;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.btn2 {
+  background-color: blue;
+  color: white;
+  padding: 12px;
+  width: 90%;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 17px;
+  position: absolute;
+  bottom: 35px;
+  margin: 35px 10px 0px 10px;
+}
+
+.btn-template {
+  padding: 10px;
+  width: 150px;
+  font-size: 15px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin: 5px;
+  float: right;
+  color: white;
+}
+.return-btn {
+  background-color: red;
+  /* padding: 10px;
+  width: 150px;
+  font-size: 15px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin: 5px;
+  float: right;
+  color: white; */
+}
+
+.back-btn {
+  background-color: blue;
+}
+
+table.orderlist {
+  margin: auto;
+  width: 90%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  text-align: right;
+}
+
+tr td,
+tr th {
+  height: 20px;
+  width: 10%;
+}
+tr.total td,
+tr.total th {
+  border-top: 3px solid blue;
+}
+
+.footer {
+  margin: auto;
+  padding: 20px;
+  width: 90%;
+  border-top: 5px solid blue;
+  text-align: center;
+}
+
+.contact-us {
+  text-decoration: none;
+  font-size: 30px;
+  color: blue;
+}
+
+.return-container {
+  height: 50px;
+  margin-top: 20px;
+}
+
+.contact-form {
+  margin: 20px 10px 20px 0px;
+}
+
+dl dt {
+  font-weight: bold;
+}
+.description {
+  /* margin: 20px; */
+  background-color: tan;
+  border: 1px solid black;
+  padding: 5px 15px 5px 15px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.item-type {
+  margin: 5px 10 5px 10px;
+  font-weight: bold;
+  color: blue;
+  font-size: 25px;
+}
+/* dl dd {
+  background-color: red;
+} */
+
+#description-link {
+  margin-left: 10px;
+  text-decoration: none;
+  font-size: 25px;
+  font-weight: bold;
+  color: blue;
+}
