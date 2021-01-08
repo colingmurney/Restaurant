@@ -3,33 +3,19 @@ export default function hiddenForm(isIndex) {
     .querySelector("#food-tbody")
     .querySelectorAll(".cart-item");
 
-  // console.log(trRef);
-
-  if (trRef.length === 0) return;
-
+  if (trRef.length === 0) {
+    const cartEmptyMsg = document.getElementById("cart-empty-msg");
+    cartEmptyMsg.style.display = "block";
+    return;
+  }
   const hiddenForm = document.createElement("form");
   hiddenForm.action = isIndex ? "addOns.php" : "payment.php";
   hiddenForm.method = "post";
-
-  // console.log(trRef[0].getElementsByTagName("td").item(0).innerHTML);
-  // console.log(trRef[0].getElementsByTagName("td").item(1).innerHTML);
 
   for (let i = 0; i < trRef.length; i++) {
     let foodInput = document.createElement("input");
     let priceInput = document.createElement("input");
     let idInput = document.createElement("input");
-
-    // foodInput.type = "hidden";
-    // foodInput.name = "cartFoodItems[]";
-    // foodInput.value = trRef[i].getElementsByTagName("td").item(0).innerHTML;
-
-    // priceInput.type = "hidden";
-    // priceInput.name = "cartPrices[]";
-    // priceInput.value = trRef[i].getElementsByTagName("td").item(1).innerHTML;
-
-    // idInput.type = "hidden";
-    // idInput.name = "cartIds[]";
-    // idInput.value = trRef[i].getAttribute("data-id");
 
     foodInput.type = "hidden";
     foodInput.name = `cart[${i}][foodItem]`;

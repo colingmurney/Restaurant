@@ -1,5 +1,5 @@
 <?php
-session_start();
+include 'include/config.php';
 
 $cart = '';
 $totalPrice = 0;
@@ -45,8 +45,13 @@ if (isset($_SESSION['CART'])) {
                     </tr>
                 </tbody>
             </table>
-            <button class="btn2">Go to Add-Ons</button>
-            <div id="hidden_form_container" style="display:none;"></div>
+            <div class="temp">
+                <h3 id="cart-empty-msg">
+                    Please add at least 1 item
+                </h3>
+                <button class="btn2">Go to Add-Ons</button>
+                <div id="hidden_form_container" style="display:none;"></div>
+            </div>
         </div>
 
         <!-- Row 1 -->

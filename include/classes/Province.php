@@ -15,7 +15,7 @@ class Province
         $query = "SELECT * FROM province";
         $result = mysqli_query($this->conn, $query);
 
-        while ($row = mysqli_fetch_array($result)) {
+        while ($row = mysqli_fetch_assoc($result)) {
             $provinces .= '<option value="' . $row['province_id'] . '">' . $row['province_name']
                 . '</option>';
         }

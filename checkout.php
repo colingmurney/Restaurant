@@ -1,10 +1,17 @@
 <?php
-session_start();
+include 'include/config.php';
+// include 'include/utils/paymentRedirect.php';
 
-if (isset($_POST['PAYMENT'])) {
+// if (isset($_POST['PAYMENT'])) {
+//     $_SESSION['PAYMENT'] = $_POST['PAYMENT'];
+// } else {
+//     header('Location: payment.php');
+// }
+
+if (!isset($_POST['PAYMENT']) && !(isset($_SESSION['PAYMENT']) && isset($_SESSION['CART']))) {
+    header('Location: addOns.php');
+} else if (isset($_POST['PAYMENT'])) {
     $_SESSION['PAYMENT'] = $_POST['PAYMENT'];
-} else {
-    header('Location: payment.php');
 }
 
 $cart = $_SESSION['CART'];

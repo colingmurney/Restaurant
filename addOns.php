@@ -1,16 +1,16 @@
 <?php
-session_start();
+include 'include/config.php';
 
 $cart = '';
 $totalPrice = 0;
 
-if (isset($_POST['cart'])) {
-    $_SESSION['CART'] = $_POST['cart'];
-    include 'include/utils/sessionCart.php';
-} else {
+if (!isset($_SESSION['CART']) && !isset($_POST['cart'])) {
     header('Location: index.php');
+} else if (isset($_POST['cart'])) {
+    $_SESSION['CART'] = $_POST['cart'];
 }
 
+include 'include/utils/sessionCart.php';
 ?>
 
 <html>

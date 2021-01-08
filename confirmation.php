@@ -1,9 +1,12 @@
 <?php
 include 'include/config.php';
 include 'include/classes/Customer.php';
-session_start();
+include 'include/classes/FoodOrder.php';
 
-print_r($_SESSION['PAYMENT']);
+// print_r($_SESSION['PAYMENT']);
+// echo "<br/><br/>";
+// print_r($_SESSION['CART']);
+// echo "<br/><br/>";
 
 if (!isset($_SESSION['PAYMENT'])) {
     header('Location: payment.php');
@@ -11,6 +14,9 @@ if (!isset($_SESSION['PAYMENT'])) {
 
 /* Start transaction */
 mysqli_begin_transaction($conn);
+/* Turn autocommit off */
+mysqli_autocommit($conn, false);
+
 
 try {
     [
@@ -18,32 +24,36 @@ try {
         "postal" => $postal, "province" => $provinceId
     ] = $_SESSION['PAYMENT'];
 
-    $customerObj = new Customer($conn, $name, $email, $city, $address, $postal, $provinceId);
+    $customerObj = new Customer($conn, $name, strtolower($email), $city, $address, $postal, $provinceId);
 
-    $id = $customerObj->getCustomerIdByEmail();
-    if ($id == NULL) {
-        echo "Returned null";
-    } else {
-        echo "customer Id for email in session: " . $id;
+    $customerId = $customerObj->getCustomerIdByEmail();
+    if ($customerId == NULL) {
+        $customerId = $customerObj->createNewCustomer();
     }
 
+    $currentDate = date('Y-m-d H:i:s');
 
+    $FoodOrderObj = new FoodOrder($conn, $currentDate, 2);
+    $FoodOrderObj = new FoodOrder($conn, $currentDate, $customerId);
+    $orderId = $FoodOrderObj->createNewFoodOrder();
+
+    foreach ($_SESSION['CART'] as $value) {
+        $FoodOrderObj->createNewOrderItem($orderId, $value['id']);
+    }
 
     mysqli_commit($conn);
 } catch (mysqli_sql_exception $exception) {
-    mysqli_rollback($mysqli);
+    mysqli_rollback($conn);
 
-    throw $exception;
+    echo $exception;
 }
-//fetch customer with given email
-//if array is null, create a new customer with Payment info
-//get customerId of fetched or new customer(LAST_INSERT_ID())
-//create new order using customerId and current DateTime
-//get OrderId (LAST_INSERT_ID())
-//for every item in $cartFoodItems, create new order_item using OrderId and the menu_item_id
-// * for above, need to figure out way to store food_item Id's in session as well
-// * also this should actually all be done as a transaction.. not sure if that is possible outside of MySQL
 
+mysqli_close($conn);
+// Unset all of the session variables
+$_SESSION = array();
+
+// Destroy the session
+session_destroy();
 
 ?>
 

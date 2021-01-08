@@ -1,6 +1,6 @@
 <?php
 
-class customer
+class Customer
 {
     private $conn;
     private $customerName;
@@ -27,7 +27,6 @@ class customer
         $query = "SELECT customer_id FROM customer WHERE email='$this->email'";
         if ($result = mysqli_query($this->conn, $query)) {
             $row = $result->fetch_assoc();
-            // echo $row['customer_id'];
             return $row['customer_id'];
         } else {
             return NULL;
@@ -37,7 +36,13 @@ class customer
     {
         return $this->email;
     }
+
+    public function createNewCustomer()
+    {
+        $query = "INSERT INTO customer (customer_name, email, city, address, postal_code, province_id)
+            VALUES ('$this->customerName', '$this->email', '$this->city', '$this->address', '$this->postalCode', '$this->provinceId')";
+
+        mysqli_query($this->conn, $query);
+        return mysqli_insert_id($this->conn);
+    }
 }
-
-
-//needs function to create customer
