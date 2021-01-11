@@ -22,4 +22,17 @@ class Province
 
         return $provinces;
     }
+
+    public function getAllProvinces2()
+    {
+        $provinces = array();
+        $query = "SELECT * FROM province";
+        $result = mysqli_query($this->conn, $query);
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            array_push($provinces, $row);
+        }
+
+        return $provinces;
+    }
 }

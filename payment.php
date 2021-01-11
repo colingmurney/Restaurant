@@ -2,9 +2,6 @@
 
 include 'include/config.php';
 include 'include/classes/Province.php';
-// include 'include/utils/paymentRedirect.php';
-$provinceObj = new Province($conn);
-$provincesHTML = $provinceObj->getAllProvinces();
 
 if (!isset($_POST['cart']) && !(isset($_SESSION['PAYMENT']) && isset($_SESSION['CART']))) {
     header('Location: addOns.php');
@@ -12,21 +9,52 @@ if (!isset($_POST['cart']) && !(isset($_SESSION['PAYMENT']) && isset($_SESSION['
     $_SESSION['CART'] = $_POST['cart'];
 }
 
+$name = $email = $city = $address = $postal = $provinceId = $cardName = $cardNumber = $expMonth = $expYear = $cvv = "";
+// $provinceId = "hi";
+
+if (isset($_SESSION['PAYMENT'])) {
+    [
+        "name" => $name, "email" => $email, "city" => $city, "address" => $address,
+        "postal" => $postal, "province" => $provinceId, "cardname" => $cardName,
+        "cardnumber" => $cardNumber, "expmonth" => $expMonth, "expyear" => $expYear, "cvv" => $cvv
+    ] = $_SESSION['PAYMENT'];
+}
+
+
+// echo strlen($provinceId);
+$provinceObj = new Province($conn);
+// $provincesHTML = $provinceObj->getAllProvinces();
+
+$provincesArray = $provinceObj->getAllProvinces2();
+
+$provincesHTML = "";
+foreach ($provincesArray as $province) {
+    // echo $provinceId . "  " . $province['province_id'] . "<br/>";
+    // echo ($provinceId === $province['province_id'] ? "selected" : "not") . "<br/>";
+    $provincesHTML .= '<option value="' . $province['province_id'] . '" '  . ($provinceId === $province['province_id'] ? "selected" : "") . '>' . $province['province_name']
+        . '</option>';
+}
+$provinceDefault = '<option value="province"' . (empty($provinceId) ? "selected" : "") . 'disabled></option>';
+
+// echo (empty($provinceId) ? "selected" : "why");
+
 //create expiry month options
 $expMonths = array('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12');
 $expMonthsHTML = "";
 foreach ($expMonths as $month) {
-    $expMonthsHTML .= '<option value="' . $month . '">' . $month
+    $expMonthsHTML .= '<option value="' . $month . '" ' . ($expMonth === $month ? "selected" : "") . '>' . $month
         . '</option>';
 }
+$expMonthDefault = '<option value="expmonth"' . (empty($expMonth) ? "selected" : "") . 'disabled></option>';
 
 //create expiry year options
-$expYears = array('21', '22', '23', '24', '25');
+$expYears = array('2021', '2022', '2023', '2024', '2025');
 $expYearsHTML = "";
 foreach ($expYears as $year) {
-    $expYearsHTML .= '<option value="' . $year . '">' . $year
+    $expYearsHTML .= '<option value="' . $year . '" ' . ($expYear === $year ? "selected" : "") . '>' . $year
         . '</option>';
 }
+$expYearDefault = '<option value="expyear"' . (empty($expYear) ? "selected" : "") . 'disabled></option>';
 
 ?>
 
@@ -57,24 +85,24 @@ foreach ($expYears as $year) {
                 <div class="col">
                     <h3>Delivery Address</h3>
                     <label>Name</label>
-                    <input type="text" id="name" class="payment-input" name="PAYMENT[name]">
+                    <input type="text" id="name" class="payment-input" name="PAYMENT[name]" value="<?php echo $name ?>">
                     <label>Email</label>
-                    <input type="text" id="email" class="payment-input" name="PAYMENT[email]">
+                    <input type="text" id="email" class="payment-input" name="PAYMENT[email]" value="<?php echo $email ?>">
                     <label>Address</label>
-                    <input type="text" id="address" class="payment-input" name="PAYMENT[address]">
+                    <input type="text" id="address" class="payment-input" name="PAYMENT[address]" value="<?php echo $address ?>">
                     <label>City</label>
-                    <input type="text" id="city" class="payment-input" name="PAYMENT[city]">
+                    <input type="text" id="city" class="payment-input" name="PAYMENT[city]" value="<?php echo $city ?>">
                     <div class="row">
                         <div class="col">
                             <label>Province</label>
+
                             <select id="province" class="payment-input" name="PAYMENT[province]">
-                                <option value="province" selected disabled></option>
-                                <?php echo $provincesHTML ?>
+                                <?php echo $provinceDefault . $provincesHTML ?>
                             </select>
                         </div>
                         <div class="col">
                             <label>Postal Code</label>
-                            <input type="text" id="postal" class="payment-input" name="PAYMENT[postal]">
+                            <input type="text" id="postal" class="payment-input" name="PAYMENT[postal]" value="<?php echo $postal ?>">
                         </div>
                     </div>
                 </div>
@@ -82,28 +110,28 @@ foreach ($expYears as $year) {
                 <div class="col">
                     <h3>Payment Details</h3>
                     <label>Name on Card</label>
-                    <input type="text" id="cardname" class="payment-input" name="PAYMENT[cardname]">
+                    <input type="text" id="cardname" class="payment-input" name="PAYMENT[cardname]" value="<?php echo $cardName ?>">
                     <label>Credit Card Number</label>
-                    <input type="text" id="cardnumber" class="payment-input" name="PAYMENT[cardnumber]">
+                    <input type="text" id="cardnumber" class="payment-input" name="PAYMENT[cardnumber]" value="<?php echo $cardNumber ?>">
                     <label>Exp Month</label>
                     <select id="expmonth" class="payment-input" name="PAYMENT[expmonth]">
-                        <option value="expmonth" selected disabled></option>
-                        <?php echo $expMonthsHTML ?>
+                        <!-- <option value="expmonth" selected disabled></option> -->
+                        <?php echo $expMonthDefault . $expMonthsHTML ?>
                     </select>
                     <!-- <input type="text" id="expmonth" class="payment-input" name="PAYMENT[expmonth]"> -->
 
                     <div class="row">
                         <div class="col">
                             <label>Exp Year</label>
-                            <select id="expyear" class="payment-input" name="PAYMENT[expmonth]">
-                                <option value="expyear" selected disabled></option>
-                                <?php echo $expYearsHTML ?>
+                            <select id="expyear" class="payment-input" name="PAYMENT[expyear]">
+                                <!-- <option value="expyear" selected disabled></option> -->
+                                <?php echo $expYearDefault . $expYearsHTML ?>
                             </select>
                             <!-- <input type="text" id="expyear" class="payment-input" name="PAYMENT[expyear]"> -->
                         </div>
                         <div class="col">
                             <label>CVV</label>
-                            <input type="text" id="cvv" class="payment-input" name="PAYMENT[cvv]">
+                            <input type="text" id="cvv" class="payment-input" name="PAYMENT[cvv]" value="<?php echo $cvv ?>">
                         </div>
                     </div>
                 </div>

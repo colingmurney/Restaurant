@@ -14,6 +14,8 @@ if (!isset($_POST['PAYMENT']) && !(isset($_SESSION['PAYMENT']) && isset($_SESSIO
     $_SESSION['PAYMENT'] = $_POST['PAYMENT'];
 }
 
+print_r($_SESSION['PAYMENT']);
+
 $cart = $_SESSION['CART'];
 $itemsUnique = array();
 $totalPrice = 0;
