@@ -11,13 +11,12 @@ class MenuItem
 
     public function getAllMenuItems()
     {
-        $items = '';
+        $items = array();
         $query = "SELECT * FROM menu_item WHERE item_type_id=1";
         $result = mysqli_query($this->conn, $query);
 
-        while ($row = mysqli_fetch_array($result)) {
-            $items .= '<div class="description"><dt>' . $row['item']
-                . '</dt><dd>' . $row['item_details'] . '</dd></div>';
+        while ($row = mysqli_fetch_assoc($result)) {
+            array_push($items, $row);
         }
 
         return $items;

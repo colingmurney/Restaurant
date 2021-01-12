@@ -1,20 +1,13 @@
 <?php
 include 'include/config.php';
-// include 'include/utils/paymentRedirect.php';
-
-// if (isset($_POST['PAYMENT'])) {
-//     $_SESSION['PAYMENT'] = $_POST['PAYMENT'];
-// } else {
-//     header('Location: payment.php');
-// }
 
 if (!isset($_POST['PAYMENT']) && !(isset($_SESSION['PAYMENT']) && isset($_SESSION['CART']))) {
     header('Location: addOns.php');
+    exit();
 } else if (isset($_POST['PAYMENT'])) {
     $_SESSION['PAYMENT'] = $_POST['PAYMENT'];
 }
 
-print_r($_SESSION['PAYMENT']);
 
 $cart = $_SESSION['CART'];
 $itemsUnique = array();
@@ -43,6 +36,7 @@ foreach ($itemsUnique as $key => $value) {
 <head>
     <title>Checkout</title>
     <link rel="stylesheet" href="static/css/style.css">
+    <script type="module" src="static/js/checkout.js" defer></script>
 </head>
 
 <body>
@@ -69,37 +63,21 @@ foreach ($itemsUnique as $key => $value) {
                 </tr>
             </thead>
             <tbody>
-                <!-- <tr>
-                    <td>Nachos</td>
-                    <td>$10</td>
-                    <td>1</td>
-                    <td>$10</td>
-                </tr>
-                <tr>
-                    <td>Burger</td>
-                    <td>$15</td>
-                    <td>1</td>
-                    <td>$15</td>
-                </tr>
-                <tr>
-                    <td>Tomato</td>
-                    <td>$2</td>
-                    <td>1</td>
-                    <td>$2</td>
-                </tr> -->
                 <?php echo $tableRowsHTML ?>
                 <tr class="total">
                     <th>Total</th>
                     <td></td>
                     <td></td>
-                    <th><?php echo $totalPrice ?></th>
+                    <th id="total-price"><?php echo $totalPrice ?></th>
                 </tr>
             </tbody>
         </table>
         <div style="margin-top: 20px;">
-            <form action="confirmation.php">
+            <!-- <form action="confirmation.php">
                 <input type="submit" class="btn" value="Checkout" />
-            </form>
+            </form> -->
+            <button class="btn">Checkout</button>
+            <div id="hidden_form_container" style="display:none;"></div>
         </div>
     </div>
 </body>

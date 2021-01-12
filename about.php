@@ -2,7 +2,7 @@
 
 <head>
     <title>About</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="static/css/style.css">
 </head>
 
 <body>
@@ -27,17 +27,10 @@
                 especially it’s steaks, and provides excellent dining in a relaxed and friendly atmosphere.
             </p>
         </div>
-        <img src="images/takeout.jpg" alt="Restaurant" width="700" height="500">
+        <img src="static/images/takeout.jpg" alt="Restaurant" width="700" height="500">
     </div>
+    <?php include 'include/footer.php' ?>
 </body>
-<div class="footer">
-    <p>
-        <a class="contact-us" href="contact.php">Contact Us</a>
-        <span style="font-weight: bold; font-size: 30px; margin: 0 20px 0 20px">|</span>
-        <a class="contact-us" href="about.php">About Us</a>
-    </p>
-    <address>1050 Peel Street, Montreal QC, Canada</address>
-    <p>Colin's Restaurant Inc &copy;</p>
-</div>
+
 
 </html>

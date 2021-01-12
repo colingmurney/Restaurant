@@ -3,13 +3,23 @@ include 'include/config.php';
 include 'include/classes/Customer.php';
 include 'include/classes/FoodOrder.php';
 
-// print_r($_SESSION['PAYMENT']);
-// echo "<br/><br/>";
-// print_r($_SESSION['CART']);
-// echo "<br/><br/>";
-
-if (!isset($_SESSION['PAYMENT'])) {
+if (!isset($_SESSION['PAYMENT']) || !isset($_POST['totalPrice'])) {
     header('Location: payment.php');
+}
+
+[
+    "name" => $name, "email" => $email, "city" => $city, "address" => $address,
+    "postal" => $postal, "province" => $provinceId
+] = $_SESSION['PAYMENT'];
+
+//backend validation incase the frontend validation fails
+foreach ($_SESSION['PAYMENT'] as $input) {
+
+    if (empty($input)) {
+        $_SESSION['PAYMENT-ERROR'] = "There was an error processing your payment Information. Please try again.";
+        header('Location: payment.php');
+        exit();
+    }
 }
 
 /* Start transaction */
@@ -17,13 +27,9 @@ mysqli_begin_transaction($conn);
 /* Turn autocommit off */
 mysqli_autocommit($conn, false);
 
+$orderId;
 
 try {
-    [
-        "name" => $name, "email" => $email, "city" => $city, "address" => $address,
-        "postal" => $postal, "province" => $provinceId
-    ] = $_SESSION['PAYMENT'];
-
     $customerObj = new Customer($conn, $name, strtolower($email), $city, $address, $postal, $provinceId);
 
     $customerId = $customerObj->getCustomerIdByEmail();
@@ -49,11 +55,23 @@ try {
 }
 
 mysqli_close($conn);
+
+$nameOnCard = trim($_SESSION['PAYMENT']['cardname']);
+$email = trim($_SESSION['PAYMENT']['email']);
+$totalPrice = $_POST['totalPrice'];
+
+$cardNumber = trim($_SESSION['PAYMENT']['cardnumber']);
+$last4Digits = substr($cardNumber, -4);
+
 // Unset all of the session variables
 $_SESSION = array();
 
 // Destroy the session
 session_destroy();
+
+
+
+
 
 ?>
 
@@ -73,7 +91,7 @@ session_destroy();
     <div>
         <h1 style="text-align: center;">Order Details & Confirmation</h1>
         <div style="text-align: center;" class="container-payment">
-            <h3>Order Confirmation Number: <span style="color:blue; font-style: italic;">#4567</span></h3>
+            <h3>Order Confirmation Number: <span style="color:blue; font-style: italic;">#<?php echo $orderId ?></span></h3>
             <p>Thank you for your order! Your food will be delivered by 7:00 PM EST</p>
             <p style="text-align: left;">
                 As a local business, we appreciate your support, including your feedback.
@@ -83,24 +101,20 @@ session_destroy();
             <table>
                 <tbody>
                     <tr>
-                        <td>Payent Type</td>
-                        <td>Mastercard</td>
-                    </tr>
-                    <tr>
                         <td>Name on Card</td>
-                        <td>Tony Smith</td>
+                        <td><?php echo $nameOnCard ?></td>
                     </tr>
                     <tr>
                         <td>Card Number</td>
-                        <td>**** **** **** 2876</td>
+                        <td>**** **** **** <?php echo $last4Digits ?></td>
                     </tr>
                     <tr>
                         <td>Contact Email</td>
-                        <td>tony.smith@gmail.com</td>
+                        <td><?php echo $email ?></td>
                     </tr>
                     <tr>
                         <td>Total (Tax Included)</td>
-                        <td>$32.00</td>
+                        <td>$<?php echo $totalPrice ?></td>
                     </tr>
                 </tbody>
             </table>

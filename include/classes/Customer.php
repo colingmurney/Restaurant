@@ -24,8 +24,21 @@ class Customer
 
     public function getCustomerIdByEmail()
     {
-        $query = "SELECT customer_id FROM customer WHERE email='$this->email'";
+        $email = mysqli_real_escape_string($this->conn, $this->email);
+        $query = "SELECT customer_id FROM customer WHERE email='$email'";
         if ($result = mysqli_query($this->conn, $query)) {
+            $row = $result->fetch_assoc();
+            return $row['customer_id'];
+        } else {
+            return NULL;
+        }
+    }
+
+    public static function getCustomerIdByEmailStatic($conn, $email)
+    {
+        $email = mysqli_real_escape_string($conn, $email);
+        $query = "SELECT customer_id FROM customer WHERE email='$email'";
+        if ($result = mysqli_query($conn, $query)) {
             $row = $result->fetch_assoc();
             return $row['customer_id'];
         } else {
@@ -39,10 +52,19 @@ class Customer
 
     public function createNewCustomer()
     {
-        $query = "INSERT INTO customer (customer_name, email, city, address, postal_code, province_id)
-            VALUES ('$this->customerName', '$this->email', '$this->city', '$this->address', '$this->postalCode', '$this->provinceId')";
+        $conn = $this->conn;
 
-        mysqli_query($this->conn, $query);
-        return mysqli_insert_id($this->conn);
+        $customerName = mysqli_real_escape_string($conn, $this->customerName);
+        $email = mysqli_real_escape_string($conn, $this->email);
+        $city = mysqli_real_escape_string($conn, $this->city);
+        $address = mysqli_real_escape_string($conn, $this->address);
+        $postalCode = mysqli_real_escape_string($conn, $this->postalCode);
+        $provinceId = mysqli_real_escape_string($conn, $this->provinceId);
+
+        $query = "INSERT INTO customer (customer_name, email, city, address, postal_code, province_id)
+            VALUES ('$customerName', '$email', '$city', '$address', '$postalCode', '$provinceId')";
+
+        mysqli_query($conn, $query);
+        return mysqli_insert_id($conn);
     }
 }

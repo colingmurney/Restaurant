@@ -6,6 +6,7 @@ $totalPrice = 0;
 
 if (!isset($_SESSION['CART']) && !isset($_POST['cart'])) {
     header('Location: index.php');
+    exit();
 } else if (isset($_POST['cart'])) {
     $_SESSION['CART'] = $_POST['cart'];
 }
@@ -49,9 +50,10 @@ include 'include/utils/sessionCart.php';
                     </tr>
                 </tbody>
             </table>
-
-            <button class="btn2">Proceed to Pay</button>
-            <div id="hidden_form_container" style="display:none;"></div>
+            <div class="form-button-container">
+                <button class="btn2">Proceed to Pay</button>
+                <div id="hidden_form_container" style="display:none;"></div>
+            </div>
         </div>
 
 

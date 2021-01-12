@@ -45,7 +45,7 @@ if (isset($_SESSION['CART'])) {
                     </tr>
                 </tbody>
             </table>
-            <div class="temp">
+            <div class="form-button-container">
                 <h3 id="cart-empty-msg">
                     Please add at least 1 item
                 </h3>

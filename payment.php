@@ -5,12 +5,17 @@ include 'include/classes/Province.php';
 
 if (!isset($_POST['cart']) && !(isset($_SESSION['PAYMENT']) && isset($_SESSION['CART']))) {
     header('Location: addOns.php');
+    exit();
 } else if (isset($_POST['cart'])) {
     $_SESSION['CART'] = $_POST['cart'];
 }
 
+$paymentError = "";
+if (isset($_SESSION['PAYMENT-ERROR'])) {
+    $paymentError .= '<h4 style="color: red;">' . $_SESSION['PAYMENT-ERROR'] . '</h4>';
+}
+
 $name = $email = $city = $address = $postal = $provinceId = $cardName = $cardNumber = $expMonth = $expYear = $cvv = "";
-// $provinceId = "hi";
 
 if (isset($_SESSION['PAYMENT'])) {
     [
@@ -20,23 +25,15 @@ if (isset($_SESSION['PAYMENT'])) {
     ] = $_SESSION['PAYMENT'];
 }
 
-
-// echo strlen($provinceId);
 $provinceObj = new Province($conn);
-// $provincesHTML = $provinceObj->getAllProvinces();
-
-$provincesArray = $provinceObj->getAllProvinces2();
+$provincesArray = $provinceObj->getAllProvinces();
 
 $provincesHTML = "";
 foreach ($provincesArray as $province) {
-    // echo $provinceId . "  " . $province['province_id'] . "<br/>";
-    // echo ($provinceId === $province['province_id'] ? "selected" : "not") . "<br/>";
     $provincesHTML .= '<option value="' . $province['province_id'] . '" '  . ($provinceId === $province['province_id'] ? "selected" : "") . '>' . $province['province_name']
         . '</option>';
 }
-$provinceDefault = '<option value="province"' . (empty($provinceId) ? "selected" : "") . 'disabled></option>';
-
-// echo (empty($provinceId) ? "selected" : "why");
+$provinceDefault = '<option value=""' . (empty($provinceId) ? "selected" : "") . 'disabled></option>';
 
 //create expiry month options
 $expMonths = array('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12');
@@ -45,7 +42,7 @@ foreach ($expMonths as $month) {
     $expMonthsHTML .= '<option value="' . $month . '" ' . ($expMonth === $month ? "selected" : "") . '>' . $month
         . '</option>';
 }
-$expMonthDefault = '<option value="expmonth"' . (empty($expMonth) ? "selected" : "") . 'disabled></option>';
+$expMonthDefault = '<option value=""' . (empty($expMonth) ? "selected" : "") . 'disabled></option>';
 
 //create expiry year options
 $expYears = array('2021', '2022', '2023', '2024', '2025');
@@ -54,8 +51,10 @@ foreach ($expYears as $year) {
     $expYearsHTML .= '<option value="' . $year . '" ' . ($expYear === $year ? "selected" : "") . '>' . $year
         . '</option>';
 }
-$expYearDefault = '<option value="expyear"' . (empty($expYear) ? "selected" : "") . 'disabled></option>';
+$expYearDefault = '<option value=""' . (empty($expYear) ? "selected" : "") . 'disabled></option>';
 
+// remove server error message on page refresh
+unset($_SESSION['PAYMENT-ERROR']);
 ?>
 
 <html>
@@ -76,8 +75,9 @@ $expYearDefault = '<option value="expyear"' . (empty($expYear) ? "selected" : ""
         </form>
 
     </div>
-    <div>
-        <h1 style="text-align: center;">Payment Information</h1>
+    <div style="text-align: center;">
+        <h1>Payment Information</h1>
+        <?php echo $paymentError ?>
     </div>
     <div class="container-payment">
         <form method="post" action="checkout.php" id="payment-form">
@@ -115,19 +115,16 @@ $expYearDefault = '<option value="expyear"' . (empty($expYear) ? "selected" : ""
                     <input type="text" id="cardnumber" class="payment-input" name="PAYMENT[cardnumber]" value="<?php echo $cardNumber ?>">
                     <label>Exp Month</label>
                     <select id="expmonth" class="payment-input" name="PAYMENT[expmonth]">
-                        <!-- <option value="expmonth" selected disabled></option> -->
+
                         <?php echo $expMonthDefault . $expMonthsHTML ?>
                     </select>
-                    <!-- <input type="text" id="expmonth" class="payment-input" name="PAYMENT[expmonth]"> -->
 
                     <div class="row">
                         <div class="col">
                             <label>Exp Year</label>
                             <select id="expyear" class="payment-input" name="PAYMENT[expyear]">
-                                <!-- <option value="expyear" selected disabled></option> -->
                                 <?php echo $expYearDefault . $expYearsHTML ?>
                             </select>
-                            <!-- <input type="text" id="expyear" class="payment-input" name="PAYMENT[expyear]"> -->
                         </div>
                         <div class="col">
                             <label>CVV</label>

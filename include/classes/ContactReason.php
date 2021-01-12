@@ -1,6 +1,6 @@
 <?php
 
-class Province
+class ContactReason
 {
     private $conn;
 
@@ -9,16 +9,16 @@ class Province
         $this->conn = $conn;
     }
 
-    public function getAllProvinces()
+    public function getAllContactReasons()
     {
-        $provinces = array();
-        $query = "SELECT * FROM province";
+        $reasons = array();
+        $query = "SELECT * FROM contact_reason";
         $result = mysqli_query($this->conn, $query);
 
         while ($row = mysqli_fetch_assoc($result)) {
-            array_push($provinces, $row);
+            array_push($reasons, $row);
         }
 
-        return $provinces;
+        return $reasons;
     }
 }

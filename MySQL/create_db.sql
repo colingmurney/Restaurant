@@ -10,7 +10,7 @@ CREATE TABLE province (
 	province_id tinyint,
 	province_name varchar(25) not null,
     PRIMARY KEY (province_id)
-);
+)ENGINE=InnoDB;
 INSERT INTO province VALUES (1, "BC");
 INSERT INTO province VALUES (2, "AB");
 INSERT INTO province VALUES (3, "SK");
@@ -31,10 +31,14 @@ CREATE TABLE customer (
     city varchar(50) not null,
     address varchar(50) not null,
     postal_code varchar(10) not null,
-    province_id tinyint not null,
+    province_id tinyint,
     PRIMARY KEY (customer_id),
-    FOREIGN KEY (province_id) REFERENCES province(province_id)
-);
+    UNIQUE KEY unique_email (email),
+    INDEX province_id_index (province_id),
+    FOREIGN KEY (province_id)
+		REFERENCES province(province_id)
+        ON DELETE set null
+) ENGINE=InnoDB;
 INSERT INTO customer (customer_name, email, city, address, postal_code, province_id) VALUES ("Colin Murney", "colin@gmail.com", "Montreal", "1050 rue Peel", "H3C0T4", 6 ); 
 
 # create contact_reason table
@@ -43,7 +47,7 @@ CREATE TABLE contact_reason (
 	reason_id tinyint,
     reason varchar(50),
     PRIMARY KEY (reason_id)
-);
+)ENGINE=InnoDB;
 INSERT INTO contact_reason VALUES (1, "There was an issue with my order");
 INSERT INTO contact_reason VALUES (2, "I never recieved my order");
 INSERT INTO contact_reason VALUES (3, "I am unsatisfied with my order");
@@ -54,12 +58,18 @@ DROP TABLE IF EXISTS contact_form;
 CREATE TABLE contact_form (
 	contact_form_id int auto_increment,
     body varchar(500) not null,
-    reason_id int,
+    reason_id tinyint,
     customer_id int,
     PRIMARY KEY (contact_form_id),
-    FOREIGN KEY (reason_id) REFERENCES contact_reason(reason_id),
-    FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
-);
+    INDEX reason_id_index (reason_id),
+    INDEX customer_id_index (customer_id),
+    FOREIGN KEY (reason_id)
+		REFERENCES contact_reason(reason_id)
+        ON DELETE set null,
+    FOREIGN KEY (customer_id)
+		REFERENCES customer(customer_id)
+        ON DELETE set null
+)ENGINE=InnoDB;
 
 # create FoodOrder table
 DROP TABLE IF EXISTS food_order;
@@ -68,8 +78,11 @@ CREATE TABLE food_order (
     order_date datetime not null,
     customer_id int,
     PRIMARY KEY (order_id),
-    FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
-);
+    INDEX customer_id_index (customer_id),
+    FOREIGN KEY (customer_id)
+		REFERENCES customer(customer_id)
+        ON DELETE set null
+)ENGINE=InnoDB;
 
 # create item_type table
 DROP TABLE IF EXISTS item_type;
@@ -77,7 +90,7 @@ CREATE TABLE item_type (
 	item_type_id tinyint,
     type_name varchar(50),
     PRIMARY KEY (item_type_id)
-);
+)ENGINE=InnoDB;
 INSERT INTO item_type VALUES (1, "Food");
 INSERT INTO item_type VALUES (2, "Drink");
 INSERT INTO item_type VALUES (3, "Add-On");
@@ -88,10 +101,13 @@ CREATE TABLE menu_item (
 	menu_item_id int,
     item varchar(50),
     item_details varchar(250),
-    item_type_id int,
+    item_type_id tinyint,
     PRIMARY KEY (menu_item_id),
-    FOREIGN KEY (item_type_id) REFERENCES item_type(item_type_id)
-);
+    INDEX item_type_id_index (item_type_id),
+    FOREIGN KEY (item_type_id)
+		REFERENCES item_type(item_type_id)
+        ON DELETE set null
+)ENGINE=InnoDB;
 INSERT INTO menu_item VALUES (1, "Burger",
 	"A 1/2 lb patty of ground beef topped with cheese, bacon, lettuce, tomato, dill pickle, mayo & fried onions.",
     1
@@ -124,44 +140,26 @@ INSERT INTO menu_item VALUES (8, "Pasta",
 	"Fresh homemade Italian pasta. Finished with freshly grated parmesan and parsley. Served with bacon-crusted garlic cheese bread.",
     1
 );
-INSERT INTO menu_item VALUES (9, "Pepsi",
-	null,
-    2
-);
-INSERT INTO menu_item VALUES (10, "Water",
-	null,
-    2
-);
-INSERT INTO menu_item VALUES (11, "Beer",
-	null,
-    2
-);
-INSERT INTO menu_item VALUES (12, "Wine",
-	null,
-    2
-);
-INSERT INTO menu_item VALUES (13, "Bacon",
-	null,
-    3
-);
-INSERT INTO menu_item VALUES (14, "Tomato",
-	null,
-    3
-);
-INSERT INTO menu_item VALUES (15, "Cheese",
-	null,
-    3
-);
-INSERT INTO menu_item VALUES (16, "Mushrooms",
-	null,
-    3
-);
+INSERT INTO menu_item VALUES (9, "Pepsi", null, 2);
+INSERT INTO menu_item VALUES (10, "Water", null, 2);
+INSERT INTO menu_item VALUES (11, "Beer", null, 2);
+INSERT INTO menu_item VALUES (12, "Wine", null, 2);
+INSERT INTO menu_item VALUES (13, "Bacon", null, 3);
+INSERT INTO menu_item VALUES (14, "Tomato", null, 3);
+INSERT INTO menu_item VALUES (15, "Cheese", null, 3);
+INSERT INTO menu_item VALUES (16, "Mushrooms", null, 3);
 
 # create order_item table
 DROP TABLE IF EXISTS order_item;
 CREATE TABLE order_item (
 	order_id int,
     menu_item_id int,
-    FOREIGN KEY (order_id) REFERENCES food_order(order_id),
-    FOREIGN KEY (menu_item_id) REFERENCES menu_item(menu_item_id)
-);
+    INDEX order_id_index (order_id),
+    INDEX menu_item_id_index (menu_item_id),
+    FOREIGN KEY (order_id)
+		REFERENCES food_order(order_id)
+        ON DELETE cascade,
+    FOREIGN KEY (menu_item_id)
+		REFERENCES menu_item(menu_item_id)
+        ON DELETE set null
+)ENGINE=InnoDB;
