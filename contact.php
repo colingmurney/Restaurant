@@ -7,7 +7,7 @@ include 'include/classes/ContactForm.php';
 
 $errorMsg = "";
 $successMsg = "";
-$hideFormCSS = "";
+// $hideFormCSS = "";
 
 $name = $email = $reasonId = $body = "";
 
@@ -17,8 +17,7 @@ if (isset($_POST['CONTACT'])) {
 
     if ($customerId == NULL) {
         $errorMsg .= "We have not completed an order for a customer with the email: " . $_SESSION['CONTACT']['email'];
-
-        //preload inputs since they will refresh on form submission
+        // Pre-fil the inputs in the case of submission error
         [
             "name" => $name, "email" => $email, "reason" => $reasonId, "body" => $body
 
@@ -27,11 +26,11 @@ if (isset($_POST['CONTACT'])) {
         $contactFormObj = new ContactForm($conn, $_SESSION['CONTACT']['body'], $_SESSION['CONTACT']['reason'], $customerId);
 
         if ($contactFormObj->createNewContactForm()) {
-            $hideFormCSS = 'style="display: none;"';
-            $successMsg .= "Thank you for your feedback! Our team will be in touch with you within 3-5 days.";
+            $_SESSION['CONTACT-SUCCESS'] = true;
+            header("Location: contact-success.php");
         } else {
             $errorMsg .= "There was an error processing your contact form. Please try again.";
-
+            // Pre-fil the inputs in the case of submission error
             [
                 "name" => $name, "email" => $email, "reason" => $reasonId, "body" => $body
 
@@ -50,9 +49,7 @@ foreach ($contactReasonArray as $reason) {
 }
 $contactReasonDefault = '<option value=""' . (empty($reasonId) ? "selected" : "") . 'disabled></option>';
 
-print_r($_SESSION);
-unset($_POST);
-session_destroy();
+unset($_POST['CONTACT']);
 ?>
 
 <html>
@@ -74,8 +71,7 @@ session_destroy();
     </div>
     <div class="container-payment">
         <h3 style="text-align: center; color:red;"><?php echo $errorMsg ?></h3>
-        <h3 style="text-align: center; color:green;"><?php echo $successMsg ?></h3>
-        <div class="contact-form" <?php echo $hideFormCSS ?>>
+        <div class="contact-form">
             <form method="post" action="#" id="contact-form">
                 <div class="col">
                     <label>Name</label>

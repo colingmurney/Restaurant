@@ -1,11 +1,3 @@
-// add event listener to checkout button
-//create hidden form
-//get totalPrice
-//add totalPrice to an input element
-//add input to form
-//set form attritbutes
-//submit form
-
 document.querySelector(".btn").addEventListener("click", () => {
   const totalPrice = document.querySelector("#total-price").innerHTML;
 

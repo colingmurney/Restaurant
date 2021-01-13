@@ -6,15 +6,18 @@ export default function disbaleDecrement() {
   const foodItems = document.querySelectorAll(".item");
 
   foodItems.forEach((foodItem) => {
-    foodItem.querySelector(".itemButton").disabled = true;
+    foodItem.querySelector(".itemButton").style.display = "none";
   });
 
   trRef.forEach((tr) => {
-    const className = tr.getAttribute("name").replace(/\s+/g, "");
-    const itemInCartAndCurrentPage = document.querySelector(`.${className}`);
+    const itemId = tr.dataset.id;
+    const itemInCartAndCurrentPage = document
+      .querySelector(".menu")
+      .querySelector(`[data-id="${itemId}"]`);
 
     if (itemInCartAndCurrentPage) {
-      itemInCartAndCurrentPage.querySelector(".itemButton").disabled = false;
+      itemInCartAndCurrentPage.querySelector(".itemButton").style.display =
+        "block";
     }
   });
 }

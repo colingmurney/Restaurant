@@ -37,6 +37,7 @@ body {
 img {
   width: 100%;
   border-radius: 25px;
+  cursor: pointer;
 }
 
 .page-content {
@@ -136,8 +137,6 @@ label {
   position: absolute;
   bottom: 35px;
   text-align: center;
-  /* background-color: grey; */
-  /* margin-right: 50px; */
 }
 
 #cart-empty-msg {
@@ -154,9 +153,6 @@ label {
   border-radius: 3px;
   cursor: pointer;
   font-size: 17px;
-  /* position: absolute; */
-  /* bottom: 35px; */
-  /* margin: 35px 10px 0px 10px; */
   margin: 10px 10px 0px 10px;
 }
 
@@ -172,14 +168,6 @@ label {
 }
 .return-btn {
   background-color: red;
-  /* padding: 10px;
-  width: 150px;
-  font-size: 15px;
-  border-radius: 3px;
-  cursor: pointer;
-  margin: 5px;
-  float: right;
-  color: white; */
 }
 
 .back-btn {
@@ -231,7 +219,6 @@ dl dt {
   font-weight: bold;
 }
 .description {
-  /* margin: 20px; */
   background-color: tan;
   border: 1px solid black;
   padding: 5px 15px 5px 15px;
@@ -245,9 +232,6 @@ dl dt {
   color: blue;
   font-size: 25px;
 }
-/* dl dd {
-  background-color: red;
-} */
 
 #description-link {
   margin-left: 10px;

@@ -4,7 +4,7 @@ include 'include/config.php';
 include 'include/classes/Province.php';
 
 if (!isset($_POST['cart']) && !(isset($_SESSION['PAYMENT']) && isset($_SESSION['CART']))) {
-    header('Location: addOns.php');
+    header('Location: add-ons.php');
     exit();
 } else if (isset($_POST['cart'])) {
     $_SESSION['CART'] = $_POST['cart'];
@@ -70,7 +70,7 @@ unset($_SESSION['PAYMENT-ERROR']);
         <form action="index.php">
             <input type="submit" value="Return to Home" class="btn-template return-btn">
         </form>
-        <form action="addOns.php">
+        <form action="add-ons.php">
             <input type="submit" value="Back" class="btn-template back-btn">
         </form>
 

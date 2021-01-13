@@ -1,13 +1,12 @@
 <?php
 include 'include/config.php';
 
-if (!isset($_POST['PAYMENT']) && !(isset($_SESSION['PAYMENT']) && isset($_SESSION['CART']))) {
-    header('Location: addOns.php');
+if (!(isset($_POST['PAYMENT']) && isset($_POST['CART'])) && !(isset($_SESSION['PAYMENT']) && isset($_SESSION['CART']))) {
+    header('Location: add-ons.php');
     exit();
 } else if (isset($_POST['PAYMENT'])) {
     $_SESSION['PAYMENT'] = $_POST['PAYMENT'];
 }
-
 
 $cart = $_SESSION['CART'];
 $itemsUnique = array();

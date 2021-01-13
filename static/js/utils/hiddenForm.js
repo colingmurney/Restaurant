@@ -3,13 +3,27 @@ export default function hiddenForm(isIndex) {
     .querySelector("#food-tbody")
     .querySelectorAll(".cart-item");
 
-  if (trRef.length === 0) {
+  // if (trRef.length === 0) {
+  //   const cartEmptyMsg = document.getElementById("cart-empty-msg");
+  //   cartEmptyMsg.style.display = "block";
+  //   return;
+  // }
+
+  let mainItemCount = 0;
+  trRef.forEach((tr) => {
+    if (tr.dataset.id <= 8) {
+      mainItemCount++;
+    }
+  });
+
+  if (mainItemCount === 0) {
     const cartEmptyMsg = document.getElementById("cart-empty-msg");
     cartEmptyMsg.style.display = "block";
     return;
   }
+
   const hiddenForm = document.createElement("form");
-  hiddenForm.action = isIndex ? "addOns.php" : "payment.php";
+  hiddenForm.action = isIndex ? "add-ons.php" : "payment.php";
   hiddenForm.method = "post";
 
   for (let i = 0; i < trRef.length; i++) {

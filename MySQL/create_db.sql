@@ -163,3 +163,10 @@ CREATE TABLE order_item (
 		REFERENCES menu_item(menu_item_id)
         ON DELETE set null
 )ENGINE=InnoDB;
+
+# create staff login table
+DROP TABLE IF EXISTS staff_login;
+CREATE TABLE staff_login (
+	username varchar(50),
+    hashed_password varchar(250)
+);
