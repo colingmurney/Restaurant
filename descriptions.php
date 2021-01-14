@@ -3,7 +3,7 @@ include 'include/config.php';
 include 'include/classes/MenuItem.php';
 
 $menuItemObj = new MenuItem($conn);
-$items = $menuItemObj->getAllMenuItems();
+$items = $menuItemObj->getTypeOneMenuItems();
 
 $itemsHTML = "";
 foreach ($items as $item) {

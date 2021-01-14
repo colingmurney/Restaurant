@@ -70,18 +70,16 @@ $_POST = array();
 // Destroy the session
 session_destroy();
 
-
-
-
-
 ?>
 
 <html>
 
 <head>
     <title>Order Confirmation</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <script type="module" src="static/js/confirmation.js" defer></script>
 </head>
-<link rel="stylesheet" href="static/css/style.css">
+
 
 <body>
     <div class="return-container">
@@ -93,7 +91,7 @@ session_destroy();
         <h1 style="text-align: center;">Order Details & Confirmation</h1>
         <div style="text-align: center;" class="container-payment">
             <h3>Order Confirmation Number: <span style="color:blue; font-style: italic;">#<?php echo $orderId ?></span></h3>
-            <p>Thank you for your order! Your food will be delivered by 7:00 PM EST</p>
+            <p id="ready-time">Thank you for your order! Your food will be delivered by </p>
             <p style="text-align: left;">
                 As a local business, we appreciate your support, including your feedback.
                 If you're not 100% satisfied with your online food ordering experience with Colin's Restaurant,

@@ -1,7 +1,7 @@
 <?php
 include 'include/config.php';
 
-if (!(isset($_POST['PAYMENT']) && isset($_POST['CART'])) && !(isset($_SESSION['PAYMENT']) && isset($_SESSION['CART']))) {
+if (!(isset($_POST['PAYMENT']) && isset($_SESSION['CART'])) && !(isset($_SESSION['PAYMENT']) && isset($_SESSION['CART']))) {
     header('Location: add-ons.php');
     exit();
 } else if (isset($_POST['PAYMENT'])) {

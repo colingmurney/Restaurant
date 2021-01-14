@@ -7,7 +7,6 @@ include 'include/classes/ContactForm.php';
 
 $errorMsg = "";
 $successMsg = "";
-// $hideFormCSS = "";
 
 $name = $email = $reasonId = $body = "";
 

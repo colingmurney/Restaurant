@@ -85,24 +85,23 @@ unset($_SESSION['PAYMENT-ERROR']);
                 <div class="col">
                     <h3>Delivery Address</h3>
                     <label>Name</label>
-                    <input type="text" id="name" class="payment-input" name="PAYMENT[name]" value="<?php echo $name ?>">
+                    <input type="text" id="name" class="payment-input w-lg" name="PAYMENT[name]" value="<?php echo $name ?>" maxlength="50">
                     <label>Email</label>
-                    <input type="text" id="email" class="payment-input" name="PAYMENT[email]" value="<?php echo $email ?>">
+                    <input type="text" id="email" class="payment-input w-lg" name="PAYMENT[email]" value="<?php echo $email ?>" maxlength="50">
                     <label>Address</label>
-                    <input type="text" id="address" class="payment-input" name="PAYMENT[address]" value="<?php echo $address ?>">
+                    <input type="text" id="address" class="payment-input w-lg" name="PAYMENT[address]" value="<?php echo $address ?>" maxlength="50">
                     <label>City</label>
-                    <input type="text" id="city" class="payment-input" name="PAYMENT[city]" value="<?php echo $city ?>">
+                    <input type="text" id="city" class="payment-input w-lg" name="PAYMENT[city]" value="<?php echo $city ?>" maxlength="25">
                     <div class="row">
-                        <div class="col">
+                        <div style="margin-right: 30px">
                             <label>Province</label>
-
                             <select id="province" class="payment-input" name="PAYMENT[province]">
                                 <?php echo $provinceDefault . $provincesHTML ?>
                             </select>
                         </div>
-                        <div class="col">
+                        <div>
                             <label>Postal Code</label>
-                            <input type="text" id="postal" class="payment-input" name="PAYMENT[postal]" value="<?php echo $postal ?>">
+                            <input type="text" id="postal" class="payment-input w-lg" name="PAYMENT[postal]" value="<?php echo $postal ?>" maxlength="7">
                         </div>
                     </div>
                 </div>
@@ -110,27 +109,28 @@ unset($_SESSION['PAYMENT-ERROR']);
                 <div class="col">
                     <h3>Payment Details</h3>
                     <label>Name on Card</label>
-                    <input type="text" id="cardname" class="payment-input" name="PAYMENT[cardname]" value="<?php echo $cardName ?>">
+                    <input type="text" id="cardname" class="payment-input w-lg" name="PAYMENT[cardname]" value="<?php echo $cardName ?>" maxlength="50">
                     <label>Credit Card Number</label>
-                    <input type="text" id="cardnumber" class="payment-input" name="PAYMENT[cardnumber]" value="<?php echo $cardNumber ?>">
-                    <label>Exp Month</label>
-                    <select id="expmonth" class="payment-input" name="PAYMENT[expmonth]">
-
-                        <?php echo $expMonthDefault . $expMonthsHTML ?>
-                    </select>
-
+                    <input type="text" id="cardnumber" class="payment-input w-lg" name="PAYMENT[cardnumber]" value="<?php echo $cardNumber ?>" maxlength="20">
                     <div class="row">
-                        <div class="col">
+                        <div class="">
+                            <label>Exp Month</label>
+                            <select id="expmonth" class="payment-input" name="PAYMENT[expmonth]">
+                                <?php echo $expMonthDefault . $expMonthsHTML ?>
+                            </select>
+                        </div>
+                        <div class="">
                             <label>Exp Year</label>
                             <select id="expyear" class="payment-input" name="PAYMENT[expyear]">
                                 <?php echo $expYearDefault . $expYearsHTML ?>
                             </select>
                         </div>
-                        <div class="col">
+                        <div class="">
                             <label>CVV</label>
-                            <input type="text" id="cvv" class="payment-input" name="PAYMENT[cvv]" value="<?php echo $cvv ?>">
+                            <input type="text" id="cvv" class="payment-input w-sm" name="PAYMENT[cvv]" value="<?php echo $cvv ?>" maxlength="3">
                         </div>
                     </div>
+
                 </div>
             </div>
 
