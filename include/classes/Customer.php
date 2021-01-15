@@ -39,7 +39,8 @@ class Customer
         $email = mysqli_real_escape_string($conn, $email);
         $query = "SELECT customer_id FROM customer WHERE email='$email'";
         if ($result = mysqli_query($conn, $query)) {
-            $row = $result->fetch_assoc();
+            // $row = $result->fetch_assoc();
+            $row = mysqli_fetch_assoc($result);
             return $row['customer_id'];
         } else {
             return NULL;

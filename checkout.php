@@ -11,7 +11,7 @@ if (!(isset($_POST['PAYMENT']) && isset($_SESSION['CART'])) && !(isset($_SESSION
 $cart = $_SESSION['CART'];
 $itemsUnique = array();
 $totalPrice = 0;
-$tableRowsHTML = '';
+// $tableRowsHTML = '';
 
 for ($i = 0; $i < count($cart); $i++) {
     $totalPrice += $cart[$i]['price'];
@@ -23,10 +23,26 @@ for ($i = 0; $i < count($cart); $i++) {
     }
 }
 
+$tableRowTemplate = '<tr>
+                        <td>$key</td>
+                        <td>$price</td>
+                        <td>$count</td>
+                        <td>$totalItemPrice</td>
+                    </tr>';
+$tableRowsHTML = "";
+
 foreach ($itemsUnique as $key => $value) {
-    $tableRowsHTML .= ' <tr><td>' . $key . '</td><td>' . $value['price']
-        . '</td><td>' . $value['count'] . '</td><td>' . ($value['count'] * $value['price'])
-        . '</td></tr> ';
+    // $tableRowsHTML .= ' <tr><td>' . $key . '</td><td>' . $value['price']
+    //     . '</td><td>' . $value['count'] . '</td><td>' . ($value['count'] * $value['price'])
+    //     . '</td></tr> ';
+
+    $vars = array(
+        '$key' => $key,
+        '$price' => $value['price'],
+        '$count' => $value['count'],
+        '$totalItemPrice' => ($value['count'] * $value['price']),
+    );
+    $tableRowsHTML .= strtr($tableRowTemplate, $vars);
 }
 ?>
 

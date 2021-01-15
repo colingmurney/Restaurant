@@ -28,29 +28,57 @@ if (isset($_SESSION['PAYMENT'])) {
 $provinceObj = new Province($conn);
 $provincesArray = $provinceObj->getAllProvinces();
 
+$provinceTemplate = '<option value="$provinceId" $selected>$provinceName</option>';
 $provincesHTML = "";
 foreach ($provincesArray as $province) {
-    $provincesHTML .= '<option value="' . $province['province_id'] . '" '  . ($provinceId === $province['province_id'] ? "selected" : "") . '>' . $province['province_name']
-        . '</option>';
+    // $provincesHTML .= '<option value="' . $province['province_id'] . '" '  . ($provinceId === $province['province_id'] ? "selected" : "") . '>' . $province['province_name']
+    //     . '</option>';
+
+    $vars = array(
+        '$provinceId' => $province['province_id'],
+        '$selected' => ($provinceId === $province['province_id'] ? "selected" : ""),
+        '$provinceName' => $province['province_name']
+    );
+
+    $provincesHTML .= strtr($provinceTemplate, $vars);
 }
+
 $provinceDefault = '<option value=""' . (empty($provinceId) ? "selected" : "") . 'disabled></option>';
 
 //create expiry month options
 $expMonths = array('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12');
+
+$expMonthTemplate = '<option value="$month" $selected>$month</option>';
 $expMonthsHTML = "";
 foreach ($expMonths as $month) {
-    $expMonthsHTML .= '<option value="' . $month . '" ' . ($expMonth === $month ? "selected" : "") . '>' . $month
-        . '</option>';
+    // $expMonthsHTML .= '<option value="' . $month . '" ' . ($expMonth === $month ? "selected" : "") . '>' . $month
+    //     . '</option>';
+
+    $vars = array(
+        '$month' => $month,
+        '$selected' => ($expMonth === $month ? "selected" : "")
+    );
+
+    $expMonthsHTML .= strtr($expMonthTemplate, $vars);
 }
 $expMonthDefault = '<option value=""' . (empty($expMonth) ? "selected" : "") . 'disabled></option>';
 
 //create expiry year options
 $expYears = array('2021', '2022', '2023', '2024', '2025');
+
+$expYearTemplate = '<option value="$year" $selected>$year</option>';
 $expYearsHTML = "";
 foreach ($expYears as $year) {
-    $expYearsHTML .= '<option value="' . $year . '" ' . ($expYear === $year ? "selected" : "") . '>' . $year
-        . '</option>';
+    //     $expYearsHTML .= '<option value="' . $year . '" ' . ($expYear === $year ? "selected" : "") . '>' . $year
+    //         . '</option>';
+    $vars = array(
+        '$year' => $year,
+        '$selected' => ($expYear === $year ? "selected" : "")
+    );
+
+    $expYearsHTML .= strtr($expYearTemplate, $vars);
 }
+
 $expYearDefault = '<option value=""' . (empty($expYear) ? "selected" : "") . 'disabled></option>';
 
 // remove server error message on page refresh

@@ -9,7 +9,6 @@ class AdminLogin
 
     public function __construct($conn, $username, $hashedPassword)
     {
-
         $this->conn = $conn;
         $this->username = $username;
         $this->hashedPassword = $hashedPassword;

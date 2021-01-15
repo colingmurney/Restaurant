@@ -32,4 +32,59 @@ class ContactForm
             return false;
         }
     }
+
+    public static function getMessagesSearch($conn, $searchInput, $filter)
+    {
+        $searchInput = mysqli_real_escape_string($conn, $searchInput);
+        $filter = mysqli_real_escape_string($conn, $filter);
+
+        $whereClause = 'WHERE customer_name REGEXP "' . $searchInput . '*" ';
+
+        if ($filter == "pending") {
+            $whereClause .= "AND is_pending=1";
+        } elseif ($filter == "replied") {
+            $whereClause .= "AND is_pending=0";
+        }
+
+        $query = 'SELECT contact_form_id, customer_name, email, body, reason, is_pending
+                    FROM customer
+                    JOIN contact_form USING(customer_id)
+                    JOIN contact_reason USING(reason_id) ' . $whereClause . ';';
+
+        $result = mysqli_query($conn, $query);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    public static function getAllMessages($conn)
+    {
+        $query = "SELECT contact_form_id, customer_name, email, body, reason, is_pending
+                    FROM customer
+                    JOIN contact_form USING(customer_id)
+                    JOIN contact_reason USING(reason_id);";
+
+        $result = mysqli_query($conn, $query);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    public static function getPendingMessages($conn)
+    {
+        $query = "SELECT contact_form_id, customer_name, email, body, reason, is_pending
+                    FROM customer
+                    JOIN contact_form USING(customer_id)
+                    JOIN contact_reason USING(reason_id)
+                    WHERE is_pending=1;";
+        $result = mysqli_query($conn, $query);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+
+    public static function getRepliedMessages($conn)
+    {
+        $query = "SELECT contact_form_id, customer_name, email, body, reason, is_pending
+                    FROM customer
+                    JOIN contact_form USING(customer_id)
+                    JOIN contact_reason USING(reason_id)
+                    WHERE is_pending=0;";
+        $result = mysqli_query($conn, $query);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
 }

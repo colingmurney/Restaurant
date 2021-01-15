@@ -40,7 +40,7 @@ if (isset($_GET['username'])) {
 <html>
 
 <head>
-    <title>Staff Sign In</title>
+    <title>Admin Sign In</title>
 </head>
 
 <body>

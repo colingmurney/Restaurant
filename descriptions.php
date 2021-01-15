@@ -5,10 +5,22 @@ include 'include/classes/MenuItem.php';
 $menuItemObj = new MenuItem($conn);
 $items = $menuItemObj->getTypeOneMenuItems();
 
+$itemTemplate = '<div class="description">
+                    <dt>$item</dt>
+                    <dd>$itemDetails</dd>
+                </div>';
+
 $itemsHTML = "";
 foreach ($items as $item) {
-    $itemsHTML .= '<div class="description"><dt>' . $item['item']
-        . '</dt><dd>' . $item['item_details'] . '</dd></div>';
+    // $itemsHTML .= '<div class="description"><dt>' . $item['item']
+    //     . '</dt><dd>' . $item['item_details'] . '</dd></div>';
+
+    $vars = array(
+        '$item' => $item['item'],
+        '$itemDetails' => $item['item_details']
+    );
+
+    $itemsHTML .= strtr($itemTemplate, $vars);
 }
 ?>
 

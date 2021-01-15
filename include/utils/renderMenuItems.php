@@ -7,15 +7,15 @@ function renderMenuItems($conn, $isIndex)
     $menuRowTwoHTML = "";
 
     $templateHTML = '<div class="item" data-id="$id">
-                    <div class="item-parent" name="$name" data-id="$id" value="$price">
-                        <img class="increment" src="$imagePath" alt="$name">
-                        <div class="button-container">
-                            <button class="itemButton decrement">-</button>
-                            <button class="itemButton increment">+</button>
-                            <h3>$name $$price</h3>
+                        <div class="item-parent" name="$name" data-id="$id" value="$price">
+                            <img class="increment" src="$imagePath" alt="$name">
+                            <div class="button-container">
+                                <button class="itemButton decrement">-</button>
+                                <button class="itemButton increment">+</button>
+                                <h3>$name $$price</h3>
+                            </div>
                         </div>
-                    </div>
-                </div>';
+                    </div>';
 
     $menuObj = new MenuItem($conn);
 

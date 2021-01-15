@@ -2,10 +2,10 @@
 
 - Order shouldn't be able to be inserted in DB if there are no item's of type 1 (main dish)
 - Make cart size flexible
-- Render menu items html dynamically
 
 ## Staff section
 
+- Pagination
 - Style Login form
 - Ability to make menu items unavailable
 - Ability to remove menu items

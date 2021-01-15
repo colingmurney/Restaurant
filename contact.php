@@ -41,10 +41,19 @@ if (isset($_POST['CONTACT'])) {
 $contactReasonObj = new ContactReason($conn);
 $contactReasonArray = $contactReasonObj->getAllContactReasons();
 
-$contactReasonHTML = "";
+$contactReasonTemplate = '<option value="$reasonId" $selected>$reason</option>';
+$contactReasonsHTML = "";
 foreach ($contactReasonArray as $reason) {
-    $contactReasonHTML .= '<option value="' . $reason['reason_id'] . '" ' . ($reasonId === $reason['reason_id'] ? "selected" : "") . '>' . $reason['reason']
-        . '</option>';
+    // $contactReasonHTML .= '<option value="' . $reason['reason_id'] . '" ' . ($reasonId === $reason['reason_id'] ? "selected" : "") . '>' . $reason['reason']
+    //     . '</option>';
+
+    $vars = array(
+        '$reasonId' => $reason['reason_id'],
+        '$selected' => ($reasonId === $reason['reason_id'] ? "selected" : ""),
+        '$reason' => $reason['reason']
+    );
+
+    $contactReasonsHTML .= strtr($contactReasonTemplate, $vars);
 }
 $contactReasonDefault = '<option value=""' . (empty($reasonId) ? "selected" : "") . 'disabled></option>';
 
@@ -83,12 +92,12 @@ unset($_POST['CONTACT']);
                 <div class="col">
                     <label>Reason for contact</label>
                     <select class="payment-input" id="reason" name="CONTACT[reason]">
-                        <?php echo $contactReasonDefault . $contactReasonHTML ?>
+                        <?php echo $contactReasonDefault . $contactReasonsHTML ?>
                     </select>
                 </div>
-                <div class="col" style="margin-top: 20px;">
+                <div class="col" style="margin-top: 20px; width: 90%;">
                     <label>Please briefly provide details of your order experience</label>
-                    <textarea id="body" cols="90" rows="10" name="CONTACT[body]"><?php echo $body ?></textarea>
+                    <textarea id="body" style="width: 100%; min-height: 100px" name="CONTACT[body]"><?php echo $body ?></textarea>
                 </div>
 
                 <div style="text-align: center;" id="validation-errors">

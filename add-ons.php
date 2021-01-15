@@ -2,7 +2,7 @@
 include 'include/config.php';
 include 'include/utils/renderMenuItems.php';
 
-$cart = '';
+$cartRowsHTML = '';
 $totalPrice = 0;
 
 if (!isset($_SESSION['CART']) && !isset($_POST['cart'])) {
@@ -36,28 +36,7 @@ $menuRows = renderMenuItems($conn, false);
     <!-- PAGE CONTENT -->
     <div class="page-content">
 
-        <div class="cart cart-addons">
-            <h4 style="text-align: center;">Cart</h4>
-            <table class="orderlist" id="food-table">
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Price (CAD)</th>
-                    </tr>
-                </thead>
-                <tbody id="food-tbody">
-                    <?php echo $cart ?>
-                    <tr class="total">
-                        <th class="food">Total ($)</th>
-                        <th class="price"><?php echo $totalPrice ?></th>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="form-button-container">
-                <button class="btn2">Proceed to Pay</button>
-                <div id="hidden_form_container" style="display:none;"></div>
-            </div>
-        </div>
+        <?php include 'include/utils/cart.php' ?>
 
         <div class="menu">
             <!-- Row 1 -->

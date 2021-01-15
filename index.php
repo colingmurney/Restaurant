@@ -2,7 +2,7 @@
 include 'include/config.php';
 include 'include/utils/renderMenuItems.php';
 
-$cart = '';
+$cartRowsHTML = '';
 $totalPrice = 0;
 
 if (isset($_SESSION['CART'])) {
@@ -30,44 +30,17 @@ $menuRows = renderMenuItems($conn, true);
     </div>
 
     <div class="page-content">
-
-        <div class="cart cart-index">
-            <h4 style="text-align: center;">Cart</h4>
-            <table class="orderlist" id="food-table">
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Price (CAD)</th>
-                    </tr>
-                </thead>
-                <tbody id="food-tbody">
-                    <?php echo $cart ?>
-                    <tr class="total">
-                        <th class="food">Total ($)</th>
-                        <th class="price"><?php echo $totalPrice ?></th>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="form-button-container">
-                <h3 id="cart-empty-msg">
-                    Please add at least 1 main food item to your order.
-                </h3>
-                <button class="btn2">Go to Add-Ons</button>
-                <div id="hidden_form_container" style="display:none;"></div>
-            </div>
-        </div>
+        <?php include 'include/utils/cart.php' ?>
 
         <div class="menu">
             <!-- Row 1 -->
             <div class="grid-row">
                 <?php echo $menuRows[0] ?>
-
             </div>
 
             <!-- Row 2-->
             <div class="grid-row">
                 <?php echo $menuRows[1] ?>
-
             </div>
         </div>
     </div>

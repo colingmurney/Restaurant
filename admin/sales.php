@@ -6,12 +6,15 @@ if (!isset($_SESSION['username'])) {
     header('Location: login.php');
 }
 
+// default is all sales in order of most recent
+// can sort by opposite order
+// can sort by size of order ($)
 ?>
 
 <html>
 
 <head>
-    <title>Admin Panel</title>
+    <title>Sales</title>
     <link rel="stylesheet" href="static/css/style.css">
 </head>
 
@@ -20,11 +23,7 @@ if (!isset($_SESSION['username'])) {
 
     <!-- Page content -->
     <div class="main">
-        Put some summary stats for index page... <br /><br />
-        Total Sales Revenue, table of sales per item,
-        number of contact forms still pending, sales per province table,
-        sales per item type, top 5 customers with their total purchases,
-        top choice for each item type
+
     </div>
 </body>
 
