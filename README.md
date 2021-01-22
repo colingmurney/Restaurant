@@ -2,7 +2,7 @@
 
 JavaScript, PHP and MySQL website for customers to order food online from a restaurant.
 
-![Screenshot](README/index.png)
+![Index](https://github.com/colingmurney/Restaurant/blob/main/README/index.png)
 
 ## Working functionality
 
@@ -32,10 +32,10 @@ CSS needs to be made responsive and Admin section of site needs to styled
 
 ## Screenshots
 
-![Screenshot](README/add-ons.png)
+![Add-ons](https://github.com/colingmurney/Restaurant/blob/main/README/add-ons.PNG)
 
-![Screenshot](README/payment.png)
+![Payment](https://github.com/colingmurney/Restaurant/blob/main/README/payment.png)
 
-![Screenshot](README/checkout.png)
+![Checkout](https://github.com/colingmurney/Restaurant/blob/main/README/checkout.png)
 
-![Screenshot](README/confirmation.png)
+![Confirmation](https://github.com/colingmurney/Restaurant/blob/main/README/confirmation.png)
