@@ -11,16 +11,7 @@ class Province
 
     public function getAllProvinces()
     {
-        // $provinces = array();
-        // $query = "SELECT * FROM province";
-        // $result = mysqli_query($this->conn, $query);
-
-        // while ($row = mysqli_fetch_assoc($result)) {
-        //     array_push($provinces, $row);
-        // }
-
-        // return $provinces;
-
+        // get provinces for payment form 
         $query = "SELECT * FROM province";
         $result = mysqli_query($this->conn, $query);
 

@@ -2,9 +2,11 @@
 include 'include/config.php';
 include 'include/classes/MenuItem.php';
 
+// retrieve menu items and their descriptions
 $menuItemObj = new MenuItem($conn);
 $items = $menuItemObj->getTypeOneMenuItems();
 
+// generate html for item descriptions
 $itemTemplate = '<div class="description">
                     <dt>$item</dt>
                     <dd>$itemDetails</dd>
@@ -12,14 +14,10 @@ $itemTemplate = '<div class="description">
 
 $itemsHTML = "";
 foreach ($items as $item) {
-    // $itemsHTML .= '<div class="description"><dt>' . $item['item']
-    //     . '</dt><dd>' . $item['item_details'] . '</dd></div>';
-
     $vars = array(
         '$item' => $item['item'],
         '$itemDetails' => $item['item_details']
     );
-
     $itemsHTML .= strtr($itemTemplate, $vars);
 }
 ?>
@@ -45,15 +43,8 @@ foreach ($items as $item) {
             <?php echo $itemsHTML ?>
         </dl>
     </div>
-    <div class="footer">
-        <p>
-            <a class="contact-us" href="contact.html">Contact Us</a>
-            <span style="font-weight: bold; font-size: 30px; margin: 0 20px 0 20px">|</span>
-            <a class="contact-us" href="about.html">About Us</a>
-        </p>
-        <address>1050 Peel Street, Montreal QC, Canada</address>
-        <p>Colin's Restaurant Inc &copy;</p>
-    </div>
+    <!-- footer -->
+    <?php include 'include/footer.php' ?>
 </body>
 
 </html>

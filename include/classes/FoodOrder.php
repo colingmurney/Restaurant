@@ -15,7 +15,8 @@ class FoodOrder
 
     public function createNewFoodOrder()
     {
-        // mysqli_autocommit($this->conn, false);
+        // returns the new food order id
+
         $conn = $this->conn;
         $orderDate = mysqli_real_escape_string($conn, $this->orderDate);
         $customerId = mysqli_real_escape_string($conn, $this->customerId);
@@ -24,11 +25,13 @@ class FoodOrder
             VALUES ('$orderDate', '$customerId')";
 
         mysqli_query($conn, $query);
-        return mysqli_insert_id($conn);
+        return mysqli_insert_id($conn); // retrieves id of last record inserted
     }
 
     public function createNewOrderItem($orderId, $menuItemId)
     {
+        // create new order item with the new food order id
+        // does not return anything but catches and throws exception on error
         $conn = $this->conn;
         $orderId = mysqli_real_escape_string($conn, $orderId);
         $menuItemId = mysqli_real_escape_string($conn, $menuItemId);

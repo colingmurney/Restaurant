@@ -1,6 +1,8 @@
 <?php
-include 'include/classes/MenuItem.php'; //being called from root folder
+include 'include/classes/MenuItem.php';
 
+// retrieve the menu items for page and generate html
+// function is to be called in index and add-ons with different arguments
 function renderMenuItems($conn, $isIndex)
 {
     $menuRowOneHTML = "";
@@ -19,17 +21,19 @@ function renderMenuItems($conn, $isIndex)
 
     $menuObj = new MenuItem($conn);
 
-
     $menuItems = array();
 
     if ($isIndex) {
+        // index page displays type one items
         $typeOneItems = $menuObj->getTypeOneMenuItems();
         $menuItems = array_merge($menuItems, $typeOneItems);
     } else {
+        // type two and three items are displayed on add-ons page
         $typeTwoAndThreeItems = $menuObj->getTypeTwoAndThreeMenuItems();
         $menuItems = array_merge($menuItems, $typeTwoAndThreeItems);
     }
 
+    // generate two seperate rows for UI
     $itemCount = 0;
     foreach ($menuItems as $item) {
         $itemCount++;
@@ -41,6 +45,7 @@ function renderMenuItems($conn, $isIndex)
             '$imagePath' => $item['image_path']
         );
 
+        // first 4 items are concatenated to row one, rest to row two
         if ($itemCount <= 4) {
             $menuRowOneHTML .= strtr($templateHTML, $vars);
         } else {

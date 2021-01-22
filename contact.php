@@ -5,31 +5,33 @@ include 'include/classes/ContactReason.php';
 include 'include/classes/Customer.php';
 include 'include/classes/ContactForm.php';
 
-$errorMsg = "";
-$successMsg = "";
-
-$name = $email = $reasonId = $body = "";
+// initialize error msg and pre-populated fields variables
+$errorMsg = $name = $email = $reasonId = $body = "";
 
 if (isset($_POST['CONTACT'])) {
+    // once form is submitted, copy contact details to session and check if customer exists
     $_SESSION['CONTACT'] = $_POST['CONTACT'];
     $customerId = Customer::getCustomerIdByEmailStatic($conn, trim($_SESSION['CONTACT']['email']));
 
     if ($customerId == NULL) {
+        // customer email is not in database from a previous order, display error message
         $errorMsg .= "We have not completed an order for a customer with the email: " . $_SESSION['CONTACT']['email'];
-        // Pre-fil the inputs in the case of submission error
+        // Pre-fill the inputs in the case of submission error
         [
             "name" => $name, "email" => $email, "reason" => $reasonId, "body" => $body
 
         ] = $_SESSION['CONTACT'];
     } else {
+        // create a new contact form record
         $contactFormObj = new ContactForm($conn, $_SESSION['CONTACT']['body'], $_SESSION['CONTACT']['reason'], $customerId);
-
         if ($contactFormObj->createNewContactForm()) {
             $_SESSION['CONTACT-SUCCESS'] = true;
             header("Location: contact-success.php");
+            unset($_POST);
+            exit();
         } else {
             $errorMsg .= "There was an error processing your contact form. Please try again.";
-            // Pre-fil the inputs in the case of submission error
+            // Pre-fill the inputs in the case of submission error
             [
                 "name" => $name, "email" => $email, "reason" => $reasonId, "body" => $body
 
@@ -38,15 +40,14 @@ if (isset($_POST['CONTACT'])) {
     }
 }
 
+// retrieve contact reason options
 $contactReasonObj = new ContactReason($conn);
 $contactReasonArray = $contactReasonObj->getAllContactReasons();
 
+// generate options for from dropdown
 $contactReasonTemplate = '<option value="$reasonId" $selected>$reason</option>';
 $contactReasonsHTML = "";
 foreach ($contactReasonArray as $reason) {
-    // $contactReasonHTML .= '<option value="' . $reason['reason_id'] . '" ' . ($reasonId === $reason['reason_id'] ? "selected" : "") . '>' . $reason['reason']
-    //     . '</option>';
-
     $vars = array(
         '$reasonId' => $reason['reason_id'],
         '$selected' => ($reasonId === $reason['reason_id'] ? "selected" : ""),
@@ -57,7 +58,11 @@ foreach ($contactReasonArray as $reason) {
 }
 $contactReasonDefault = '<option value=""' . (empty($reasonId) ? "selected" : "") . 'disabled></option>';
 
-unset($_POST['CONTACT']);
+// clear the conact post variable
+// unset($_POST['CONTACT']);
+
+// Destroy the session
+session_destroy();
 ?>
 
 <html>
@@ -106,13 +111,13 @@ unset($_POST['CONTACT']);
                     <div id="reason-msg" class="validation-msg">Please select a reason for contact.</div>
                     <div id="body-msg" class="validation-msg">Messages must be between 10 and 1000 characters.</div>
                 </div>
-
             </form>
             <div style="margin-top: 20px;">
                 <button class="btn">Help us serve you better!</button>
             </div>
         </div>
     </div>
+    <!-- footer -->
     <?php include 'include/footer.php' ?>
 </body>
 

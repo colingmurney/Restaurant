@@ -4,15 +4,11 @@ include 'include/classes/Customer.php';
 include 'include/classes/FoodOrder.php';
 
 if (!isset($_SESSION['PAYMENT']) || !isset($_POST['totalPrice'])) {
+    // redirect to payment if payment information is not in session, or use is not coming checkout
     header('Location: payment.php');
 }
 
-[
-    "name" => $name, "email" => $email, "city" => $city, "address" => $address,
-    "postal" => $postal, "province" => $provinceId
-] = $_SESSION['PAYMENT'];
-
-//backend validation incase the frontend validation fails
+// simple backend validation incase the frontend validation fails
 foreach ($_SESSION['PAYMENT'] as $input) {
 
     if (empty($input)) {
@@ -22,6 +18,12 @@ foreach ($_SESSION['PAYMENT'] as $input) {
     }
 }
 
+// destruct payment information array
+[
+    "name" => $name, "email" => $email, "city" => $city, "address" => $address,
+    "postal" => $postal, "province" => $provinceId
+] = $_SESSION['PAYMENT'];
+
 /* Start transaction */
 mysqli_begin_transaction($conn);
 /* Turn autocommit off */
@@ -30,36 +32,40 @@ mysqli_autocommit($conn, false);
 $orderId;
 
 try {
+    // retrieve or create customer
     $customerObj = new Customer($conn, $name, strtolower($email), $city, $address, $postal, $provinceId);
-
     $customerId = $customerObj->getCustomerIdByEmail();
     if ($customerId == NULL) {
         $customerId = $customerObj->createNewCustomer();
     }
 
+    // create new food order
     $currentDate = date('Y-m-d H:i:s');
-
     $FoodOrderObj = new FoodOrder($conn, $currentDate, 2);
     $FoodOrderObj = new FoodOrder($conn, $currentDate, $customerId);
     $orderId = $FoodOrderObj->createNewFoodOrder();
 
+    // create new record for each item in order
     foreach ($_SESSION['CART'] as $value) {
         $FoodOrderObj->createNewOrderItem($orderId, $value['id']);
     }
 
+    // commit transaction
     mysqli_commit($conn);
 } catch (mysqli_sql_exception $exception) {
+    // rollback transaction and redirect with error message
     mysqli_rollback($conn);
-
-    echo $exception;
+    $_SESSION['PAYMENT-ERROR'] = "There was an error processing your payment Information. Please try again.";
+    header('Location: payment.php');
+    exit();
 }
 
 mysqli_close($conn);
 
+// generate order details with ref number
 $nameOnCard = trim($_SESSION['PAYMENT']['cardname']);
 $email = trim($_SESSION['PAYMENT']['email']);
 $totalPrice = $_POST['totalPrice'];
-
 $cardNumber = trim($_SESSION['PAYMENT']['cardnumber']);
 $last4Digits = substr($cardNumber, -4);
 
@@ -83,6 +89,7 @@ session_destroy();
 
 <body>
     <div class="return-container">
+        <!-- home button -->
         <form action="index.php">
             <input type="submit" value="Return to Home" class="btn-template return-btn">
         </form>
@@ -118,15 +125,7 @@ session_destroy();
                 </tbody>
             </table>
         </div>
-        <div class="footer">
-            <p>
-                <a class="contact-us" href="contact.php">Contact Us</a>
-                <span style="font-weight: bold; font-size: 30px; margin: 0 20px 0 20px">|</span>
-                <a class="contact-us" href="about.php">About Us</a>
-            </p>
-            <address>1050 Peel Street, Montreal QC, Canada</address>
-            <p>Colin's Restaurant Inc &copy;</p>
-        </div>
+        <?php include 'include/footer.php' ?>
 
 </body>
 

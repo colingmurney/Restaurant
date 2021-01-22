@@ -2,15 +2,17 @@
 include 'include/config.php';
 include 'include/utils/renderMenuItems.php';
 
+// initialize cart
 $cartRowsHTML = '';
 $totalPrice = 0;
 
 if (isset($_SESSION['CART'])) {
+    // pre-populate the cart
     include 'include/utils/sessionCart.php';
 }
 
+//generate menu items html
 $menuRows = renderMenuItems($conn, true);
-
 ?>
 
 <html>
@@ -23,6 +25,7 @@ $menuRows = renderMenuItems($conn, true);
 
 <body>
     <div class="return-container">
+        <!-- Home button -->
         <form action="descriptions.php">
             <input type="submit" value="Menu Descriptions" class="btn-template back-btn">
         </form>
@@ -45,6 +48,7 @@ $menuRows = renderMenuItems($conn, true);
         </div>
     </div>
 
+    <!-- footer -->
     <?php include 'include/footer.php' ?>
 </body>
 

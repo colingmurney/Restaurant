@@ -9,6 +9,8 @@ class MenuItem
         $this->conn = $conn;
     }
 
+    // all methods retrieve and return menu items
+
     public function getAllMenuItems()
     {
         $query = "SELECT * FROM menu_item";

@@ -1,3 +1,6 @@
+// create hidden form with total price as input
+// submit form as post to confirmation page
+
 document.querySelector(".btn").addEventListener("click", () => {
   const totalPrice = document.querySelector("#total-price").innerHTML;
 

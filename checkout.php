@@ -2,20 +2,21 @@
 include 'include/config.php';
 
 if (!(isset($_POST['PAYMENT']) && isset($_SESSION['CART'])) && !(isset($_SESSION['PAYMENT']) && isset($_SESSION['CART']))) {
+    // redirect if user is not coming from payment or does not have items in their cart
     header('Location: add-ons.php');
     exit();
 } else if (isset($_POST['PAYMENT'])) {
+    // copy payment info to session to keep users details
     $_SESSION['PAYMENT'] = $_POST['PAYMENT'];
 }
 
+// generate mulit-dimensional associative array with count of each item selected
+// calculate total price of order
 $cart = $_SESSION['CART'];
 $itemsUnique = array();
 $totalPrice = 0;
-// $tableRowsHTML = '';
-
 for ($i = 0; $i < count($cart); $i++) {
     $totalPrice += $cart[$i]['price'];
-
     if (array_key_exists($cart[$i]['foodItem'], $itemsUnique)) {
         $itemsUnique[$cart[$i]['foodItem']]['count'] += 1;
     } else {
@@ -23,6 +24,7 @@ for ($i = 0; $i < count($cart); $i++) {
     }
 }
 
+// generate html using $itemsUnique array
 $tableRowTemplate = '<tr>
                         <td>$key</td>
                         <td>$price</td>
@@ -30,12 +32,7 @@ $tableRowTemplate = '<tr>
                         <td>$totalItemPrice</td>
                     </tr>';
 $tableRowsHTML = "";
-
 foreach ($itemsUnique as $key => $value) {
-    // $tableRowsHTML .= ' <tr><td>' . $key . '</td><td>' . $value['price']
-    //     . '</td><td>' . $value['count'] . '</td><td>' . ($value['count'] * $value['price'])
-    //     . '</td></tr> ';
-
     $vars = array(
         '$key' => $key,
         '$price' => $value['price'],
@@ -56,9 +53,11 @@ foreach ($itemsUnique as $key => $value) {
 
 <body>
     <div class="return-container">
+        <!-- home button -->
         <form action="index.php">
             <input type="submit" value="Return to Home" class="btn-template return-btn">
         </form>
+        <!-- back button -->
         <form action="payment.php">
             <input type="submit" value="Back" class="btn-template back-btn">
         </form>
@@ -78,6 +77,7 @@ foreach ($itemsUnique as $key => $value) {
                 </tr>
             </thead>
             <tbody>
+                <!-- order preview -->
                 <?php echo $tableRowsHTML ?>
                 <tr class="total">
                     <th>Total</th>
@@ -88,9 +88,6 @@ foreach ($itemsUnique as $key => $value) {
             </tbody>
         </table>
         <div style="margin-top: 20px;">
-            <!-- <form action="confirmation.php">
-                <input type="submit" class="btn" value="Checkout" />
-            </form> -->
             <button class="btn">Checkout</button>
             <div id="hidden_form_container" style="display:none;"></div>
         </div>

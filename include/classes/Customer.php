@@ -24,6 +24,8 @@ class Customer
 
     public function getCustomerIdByEmail()
     {
+        // use object email attribute to find customer
+        // return null if no customer matches email
         $email = mysqli_real_escape_string($this->conn, $this->email);
         $query = "SELECT customer_id FROM customer WHERE email='$email'";
         if ($result = mysqli_query($this->conn, $query)) {
@@ -36,10 +38,10 @@ class Customer
 
     public static function getCustomerIdByEmailStatic($conn, $email)
     {
+        // static version of getCustomerIdByEmail
         $email = mysqli_real_escape_string($conn, $email);
         $query = "SELECT customer_id FROM customer WHERE email='$email'";
         if ($result = mysqli_query($conn, $query)) {
-            // $row = $result->fetch_assoc();
             $row = mysqli_fetch_assoc($result);
             return $row['customer_id'];
         } else {
@@ -53,8 +55,9 @@ class Customer
 
     public function createNewCustomer()
     {
+        //method creates a new customer record and returns id
         $conn = $this->conn;
-
+        // escape variables for db query
         $customerName = mysqli_real_escape_string($conn, $this->customerName);
         $email = mysqli_real_escape_string($conn, $this->email);
         $city = mysqli_real_escape_string($conn, $this->city);
@@ -66,6 +69,6 @@ class Customer
             VALUES ('$customerName', '$email', '$city', '$address', '$postalCode', '$provinceId')";
 
         mysqli_query($conn, $query);
-        return mysqli_insert_id($conn);
+        return mysqli_insert_id($conn); // retrieves id of last record inserted
     }
 }

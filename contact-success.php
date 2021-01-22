@@ -3,12 +3,11 @@
 include 'include/config.php';
 
 if (!isset($_SESSION['CONTACT-SUCCESS'])) {
+    // redirect if user did not come from a successful contact from submission
     header("Location: contact.php");
 }
 
-// $successMsg = $_SESSION['CONTACT-SUCCESS'];
-
-unset($_POST);
+// Destroy the session
 session_destroy();
 ?>
 
@@ -38,7 +37,7 @@ session_destroy();
             <input type="submit" class="btn" value="Make a New Order" />
         </form>
     </div>
-
+    <!-- footer -->
     <?php include 'include/footer.php' ?>
 </body>
 

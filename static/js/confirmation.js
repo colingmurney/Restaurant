@@ -1,6 +1,8 @@
+// create datetime 30 minutes from current time
 const dateObj = new Date();
 dateObj.setMinutes(dateObj.getMinutes() + 30);
 
+// function formats datetime for UI
 function formatReadyTime(date) {
   var hours = date.getHours();
   var minutes = date.getMinutes();
@@ -14,5 +16,6 @@ function formatReadyTime(date) {
 
 const currentTime = formatReadyTime(dateObj);
 
+// display the time
 const currentText = document.querySelector("#ready-time");
 currentText.innerHTML += currentTime;

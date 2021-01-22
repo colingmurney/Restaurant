@@ -1,22 +1,24 @@
 <?php
-
 include 'include/config.php';
 include 'include/classes/Province.php';
 
 if (!isset($_POST['cart']) && !(isset($_SESSION['PAYMENT']) && isset($_SESSION['CART']))) {
+    // redirect if user is not coming from add-ons or does not have a session
     header('Location: add-ons.php');
     exit();
 } else if (isset($_POST['cart'])) {
+    // copy cart to session to keep users selection
     $_SESSION['CART'] = $_POST['cart'];
 }
 
+// generate message for any error that occurs on checkout
 $paymentError = "";
 if (isset($_SESSION['PAYMENT-ERROR'])) {
     $paymentError .= '<h4 style="color: red;">' . $_SESSION['PAYMENT-ERROR'] . '</h4>';
 }
 
+// pre-populate payment fields if session is set
 $name = $email = $city = $address = $postal = $provinceId = $cardName = $cardNumber = $expMonth = $expYear = $cvv = "";
-
 if (isset($_SESSION['PAYMENT'])) {
     [
         "name" => $name, "email" => $email, "city" => $city, "address" => $address,
@@ -25,63 +27,48 @@ if (isset($_SESSION['PAYMENT'])) {
     ] = $_SESSION['PAYMENT'];
 }
 
+// generate province dropdown options
 $provinceObj = new Province($conn);
 $provincesArray = $provinceObj->getAllProvinces();
-
 $provinceTemplate = '<option value="$provinceId" $selected>$provinceName</option>';
 $provincesHTML = "";
 foreach ($provincesArray as $province) {
-    // $provincesHTML .= '<option value="' . $province['province_id'] . '" '  . ($provinceId === $province['province_id'] ? "selected" : "") . '>' . $province['province_name']
-    //     . '</option>';
-
     $vars = array(
         '$provinceId' => $province['province_id'],
         '$selected' => ($provinceId === $province['province_id'] ? "selected" : ""),
         '$provinceName' => $province['province_name']
     );
-
     $provincesHTML .= strtr($provinceTemplate, $vars);
 }
-
 $provinceDefault = '<option value=""' . (empty($provinceId) ? "selected" : "") . 'disabled></option>';
 
-//create expiry month options
+// generate expiry month dropdown options
 $expMonths = array('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12');
-
 $expMonthTemplate = '<option value="$month" $selected>$month</option>';
 $expMonthsHTML = "";
 foreach ($expMonths as $month) {
-    // $expMonthsHTML .= '<option value="' . $month . '" ' . ($expMonth === $month ? "selected" : "") . '>' . $month
-    //     . '</option>';
-
     $vars = array(
         '$month' => $month,
         '$selected' => ($expMonth === $month ? "selected" : "")
     );
-
     $expMonthsHTML .= strtr($expMonthTemplate, $vars);
 }
 $expMonthDefault = '<option value=""' . (empty($expMonth) ? "selected" : "") . 'disabled></option>';
 
-//create expiry year options
+// generate expiry year dropdown options
 $expYears = array('2021', '2022', '2023', '2024', '2025');
-
 $expYearTemplate = '<option value="$year" $selected>$year</option>';
 $expYearsHTML = "";
 foreach ($expYears as $year) {
-    //     $expYearsHTML .= '<option value="' . $year . '" ' . ($expYear === $year ? "selected" : "") . '>' . $year
-    //         . '</option>';
     $vars = array(
         '$year' => $year,
         '$selected' => ($expYear === $year ? "selected" : "")
     );
-
     $expYearsHTML .= strtr($expYearTemplate, $vars);
 }
-
 $expYearDefault = '<option value=""' . (empty($expYear) ? "selected" : "") . 'disabled></option>';
 
-// remove server error message on page refresh
+// Remove error message on refresh or return to page
 unset($_SESSION['PAYMENT-ERROR']);
 ?>
 
@@ -95,18 +82,22 @@ unset($_SESSION['PAYMENT-ERROR']);
 
 <body>
     <div class="return-container">
+        <!-- Home button -->
         <form action="index.php">
             <input type="submit" value="Return to Home" class="btn-template return-btn">
         </form>
+        <!-- Submit button -->
         <form action="add-ons.php">
             <input type="submit" value="Back" class="btn-template back-btn">
         </form>
-
     </div>
+
     <div style="text-align: center;">
         <h1>Payment Information</h1>
+        <!-- error message -->
         <?php echo $paymentError ?>
     </div>
+
     <div class="container-payment">
         <form method="post" action="checkout.php" id="payment-form">
             <div class="row">
@@ -124,6 +115,7 @@ unset($_SESSION['PAYMENT-ERROR']);
                         <div style="margin-right: 30px">
                             <label>Province</label>
                             <select id="province" class="payment-input" name="PAYMENT[province]">
+                                <!-- provinces -->
                                 <?php echo $provinceDefault . $provincesHTML ?>
                             </select>
                         </div>
@@ -144,12 +136,14 @@ unset($_SESSION['PAYMENT-ERROR']);
                         <div class="">
                             <label>Exp Month</label>
                             <select id="expmonth" class="payment-input" name="PAYMENT[expmonth]">
+                                <!-- expiry months -->
                                 <?php echo $expMonthDefault . $expMonthsHTML ?>
                             </select>
                         </div>
                         <div class="">
                             <label>Exp Year</label>
                             <select id="expyear" class="payment-input" name="PAYMENT[expyear]">
+                                <!-- expiry years -->
                                 <?php echo $expYearDefault . $expYearsHTML ?>
                             </select>
                         </div>
@@ -162,6 +156,7 @@ unset($_SESSION['PAYMENT-ERROR']);
                 </div>
             </div>
 
+            <!-- validation errors are hidden by default -->
             <div style="text-align: center;" id="validation-errors">
                 <div id="name-msg" class="validation-msg">Name cannot contain numbers or special characters. Minimum 2 characters.</div>
                 <div id="email-msg" class="validation-msg">Please enter a valid email address.</div>
@@ -179,6 +174,7 @@ unset($_SESSION['PAYMENT-ERROR']);
         </form>
         <button class="btn">Continue to Checkout</button>
     </div>
+    <!-- footer -->
     <?php include 'include/footer.php' ?>
 </body>
 

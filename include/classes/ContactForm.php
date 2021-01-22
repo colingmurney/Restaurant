@@ -18,6 +18,7 @@ class ContactForm
     public function createNewContactForm()
     {
         $conn = $this->conn;
+        // escape inputs
         $body = mysqli_real_escape_string($conn, $this->body);
         $reasonId = mysqli_real_escape_string($conn, $this->reasonId);
         $customerId = mysqli_real_escape_string($conn, $this->customerId);
@@ -35,11 +36,16 @@ class ContactForm
 
     public static function getMessagesSearch($conn, $searchInput, $filter)
     {
+        // method can be used for any all contact form searches
+        // as well as any filter
+
+        // escape inputs
         $searchInput = mysqli_real_escape_string($conn, $searchInput);
         $filter = mysqli_real_escape_string($conn, $filter);
 
         $whereClause = 'WHERE customer_name REGEXP "' . $searchInput . '*" ';
 
+        // generate a second where clause if filter arg is 'pending' or 'replied'
         if ($filter == "pending") {
             $whereClause .= "AND is_pending=1";
         } elseif ($filter == "replied") {

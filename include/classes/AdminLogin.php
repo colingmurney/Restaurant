@@ -1,6 +1,5 @@
 <?php
 
-
 class AdminLogin
 {
     private $conn;
@@ -16,13 +15,16 @@ class AdminLogin
 
     public function getAdminByUsername()
     {
+        // use class attributes to find admin with username
         $username = mysqli_real_escape_string($this->conn, $this->username);
         $query = "SELECT * FROM admin_login WHERE username = '$username'";
 
         if ($result = mysqli_query($this->conn, $query)) {
             $row = $result->fetch_assoc();
+            // return admin details
             return $row;
         }
+
         return NULL;
     }
 

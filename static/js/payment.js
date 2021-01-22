@@ -15,6 +15,7 @@ import {
 const button = document.querySelector(".btn");
 
 button.addEventListener("click", () => {
+  // get user input elements
   const nameInput = document.querySelector("#name");
   const emailInput = document.querySelector("#email");
   const addressInput = document.querySelector("#address");
@@ -27,6 +28,7 @@ button.addEventListener("click", () => {
   const expyearInput = document.querySelector("#expyear");
   const cvvInput = document.querySelector("#cvv");
 
+  // validate each input element
   validateName(nameInput);
   validateEmail(emailInput);
   validateAddress(addressInput);
@@ -39,8 +41,11 @@ button.addEventListener("click", () => {
   validateExpyear(expyearInput);
   validateCvv(cvvInput);
 
+  // if any unsuccessful msgs are displayed (not all inputs are valid)
+  // return before submitted payment form
   if (document.querySelector(".validation-unsuccessful") !== null) return;
 
+  // get payment form and submit
   const paymentForm = document.querySelector("#payment-form");
   paymentForm.submit();
 });

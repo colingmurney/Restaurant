@@ -7,6 +7,7 @@
 
 <body>
     <div class="return-container">
+        <!-- Home button -->
         <form action="index.php">
             <input type="submit" value="Return to Home" class="btn-template return-btn">
         </form>
@@ -29,6 +30,8 @@
         </div>
         <img src="static/images/takeout.jpg" alt="Restaurant" width="700" height="500">
     </div>
+
+    <!-- footer -->
     <?php include 'include/footer.php' ?>
 </body>
 

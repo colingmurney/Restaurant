@@ -1,4 +1,8 @@
+// validation functions hide or display unsuccessful messages
+
 export function validateName(nameInput) {
+  // Must only include letters and spaces
+  // min 2 characters
   const re = /^[A-Za-z\s]{2,}$/;
   const name = nameInput.value.trim();
 
@@ -12,6 +16,7 @@ export function validateName(nameInput) {
 }
 
 export function validateEmail(emailInput) {
+  // any characters but must follow xxxxxx@xxxx.xxx
   const re = /\S+@\S+\.\S+/;
   const email = emailInput.value.trim();
 
@@ -25,12 +30,14 @@ export function validateEmail(emailInput) {
 }
 
 export function validateAddress(addressInput) {
+  // Any alphanumeric and spaces
+  // min 6 characters
   const re = /^[A-Za-z0-9\s]{6,}$/;
   const address = addressInput.value.trim();
 
   if (re.test(address)) {
     addressInput.classList.remove("validation-unsuccessful");
-    document.querySelector("#email-msg").style.display = "none";
+    document.querySelector("#address-msg").style.display = "none";
   } else {
     addressInput.classList.add("validation-unsuccessful");
     document.querySelector("#address-msg").style.display = "block";
@@ -38,6 +45,8 @@ export function validateAddress(addressInput) {
 }
 
 export function validateCity(cityInput) {
+  // Must only include letters and spaces
+  // min 2 characters
   const re = /^[A-Za-z\s]{2,}$/;
   const city = cityInput.value.trim();
 
@@ -51,6 +60,8 @@ export function validateCity(cityInput) {
 }
 
 export function validateProvince(provinceInput) {
+  // default province option has value of ""
+  // function validates that a province was selected
   const province = provinceInput.value;
 
   if (province) {
@@ -63,6 +74,8 @@ export function validateProvince(provinceInput) {
 }
 
 export function validatePostal(postalInput) {
+  // must follow canadian postal code format
+  // optional space between 3rd and 4th characters
   const re = /[a-zA-Z][0-9][a-zA-Z](| |)[0-9][a-zA-Z][0-9]/;
   const postal = postalInput.value.trim();
 
@@ -76,6 +89,8 @@ export function validatePostal(postalInput) {
 }
 
 export function validateCardname(cardnameInput) {
+  // allow names with hyphens and spaces
+  // must include at least 2 names that are separted by a whitespace
   const re = /^[a-zA-Z]([-']?[a-zA-Z]+)*( [a-zA-Z]([-']?[a-zA-Z]+)*)+$/;
   const cardname = cardnameInput.value.trim();
 
@@ -89,6 +104,7 @@ export function validateCardname(cardnameInput) {
 }
 
 export function validateCardnumber(cardnumberInput) {
+  // 16 digits that may include whitespace
   const re = /^([0-9]{4}\s?){4}$/;
   const cardnumber = cardnumberInput.value.trim();
 
@@ -102,6 +118,8 @@ export function validateCardnumber(cardnumberInput) {
 }
 
 export function validateExpmonth(expmonthInput) {
+  // default expiry month option has value of ""
+  // function validates that a expiry month was selected
   const expmonth = expmonthInput.value;
 
   if (expmonth) {
@@ -114,6 +132,8 @@ export function validateExpmonth(expmonthInput) {
 }
 
 export function validateExpyear(expyearInput) {
+  // default expiry year option has value of ""
+  // function validates that a expiry year was selected
   const expyear = expyearInput.value;
 
   if (expyear) {
@@ -126,6 +146,7 @@ export function validateExpyear(expyearInput) {
 }
 
 export function validateCvv(cvvInput) {
+  // must include 3 consecutive digits
   const re = /^[0-9]{3}$/;
   const cvv = cvvInput.value.trim();
 
@@ -139,6 +160,8 @@ export function validateCvv(cvvInput) {
 }
 
 export function validateReason(reasonInput) {
+  // default reason option has value of ""
+  // function validates that a reason was selected
   const reason = reasonInput.value;
 
   if (reason) {
@@ -151,6 +174,8 @@ export function validateReason(reasonInput) {
 }
 
 export function validateBody(bodyInput) {
+  // any characters
+  // min 10, max 1000
   const re = /^[\S\s]{10,1000}$/;
   const body = bodyInput.value.trim();
 
